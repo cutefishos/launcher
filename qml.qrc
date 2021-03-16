@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>qml/LauncherGridDelegate.qml</file>
+        <file>qml/PageView.qml</file>
+        <file>qml/LauncherGridView.qml</file>
+    </qresource>
+</RCC>
