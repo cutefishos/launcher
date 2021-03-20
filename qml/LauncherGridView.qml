@@ -5,7 +5,8 @@ import Cutefish.Launcher 1.0
 PageView {
     id: gridView
 
-    property int iconSize: gridView.width * 0.1 + Meui.Units.largeSpacing * 2
+    property int iconSize: Math.max(64 + root.horizontalSpacing,
+                                    gridView.width * 0.1 + root.horizontalSpacing)
 
     property int cellWidth: {
         var extraWidth = calcExtraSpacing(iconSize, gridView.width)
@@ -29,16 +30,11 @@ PageView {
         LauncherGridDelegate {
             id: delegate
             anchors.fill: parent
-            anchors.margins: Meui.Units.smallSpacing
+            anchors.leftMargin: root.horizontalSpacing
+            anchors.rightMargin: root.horizontalSpacing
+            anchors.topMargin: root.verticalSpacing
+            anchors.bottomMargin: root.verticalSpacing
         }
-    }
-
-    onWidthChanged: {
-        // gridView.adaptGrid()
-    }
-
-    onHeightChanged: {
-        // gridView.adaptGrid()
     }
 
     function calcExtraSpacing(cellSize, containerSize) {
@@ -50,15 +46,5 @@ PageView {
             extraSpacing = extraSpace / availableColumns;
         }
         return Math.floor(extraSpacing);
-    }
-
-    function adaptGrid() {
-        var fullWidth = gridView.width
-        var fullHeight = gridView.height
-
-        var cellSize = Math.max(144, gridView.height * 0.18)
-
-        gridView.cellWidth = cellSize + calcExtraSpacing(cellSize, fullWidth)
-        gridView.cellHeight = cellSize + calcExtraSpacing(cellSize, fullHeight)
     }
 }

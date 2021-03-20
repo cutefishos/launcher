@@ -10,6 +10,9 @@ import MeuiKit 1.0 as Meui
 Item {
     id: root
 
+    property real horizontalSpacing: root.width * 0.01
+    property real verticalSpacing: root.height * 0.01
+
     Wallpaper {
         id: backend
     }
@@ -55,16 +58,16 @@ Item {
         id: mainLayout
         anchors.fill: parent
         anchors.leftMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.x : 0
-        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + Meui.Units.largeSpacing * 4: 0
+        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + root.verticalSpacing * 3: 0
         anchors.rightMargin: launcher.screenRect.width - (launcher.screenAvailableRect.x + launcher.screenAvailableRect.width)
-        anchors.bottomMargin: launcher.screenRect.height - (launcher.screenAvailableRect.y + launcher.screenAvailableRect.height - Meui.Units.largeSpacing * 2)
+        anchors.bottomMargin: launcher.screenRect.height - (launcher.screenAvailableRect.y + launcher.screenAvailableRect.height - root.verticalSpacing)
 
-        spacing: Meui.Units.largeSpacing * 2
+        spacing: root.verticalSpacing * 2
 
         Item {
             id: searchItem
             Layout.fillWidth: true
-            height: fontMetrics.height + Meui.Units.largeSpacing * 2
+            height: fontMetrics.height + Meui.Units.largeSpacing
 
             TextMetrics {
                 id: fontMetrics
@@ -163,7 +166,7 @@ Item {
             currentIndex: grid.currentPage
             onCurrentIndexChanged: grid.currentPage = currentIndex
             interactive: true
-            spacing: Meui.Units.largeSpacing
+            spacing: root.horizontalSpacing / 2
             Layout.alignment: Qt.AlignHCenter
 
             delegate: Rectangle {
