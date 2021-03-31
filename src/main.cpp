@@ -26,6 +26,7 @@
 #include "launchermodel.h"
 #include "pagemodel.h"
 #include "wallpaper.h"
+#include "iconitem.h"
 
 #include <QDebug>
 #include <QTranslator>
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<LauncherModel>(uri, 1, 0, "LauncherModel");
     qmlRegisterType<PageModel>(uri, 1, 0, "PageModel");
     qmlRegisterType<Wallpaper>(uri, 1, 0, "Wallpaper");
+    qmlRegisterType<IconItem>(uri, 1, 0, "IconItem");
 
     QApplication app(argc, argv);
     app.setApplicationName(QStringLiteral("cutefish-launcher"));

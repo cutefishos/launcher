@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0
 import MeuiKit 1.0 as Meui
+import Cutefish.Launcher 1.0
 
 Item {
     id: control
@@ -40,7 +41,7 @@ Item {
 //        opacity: 0.5
 //    }
 
-    Image {
+    IconItem {
         id: icon
 
         anchors {
@@ -52,13 +53,10 @@ Item {
 
         property real size: height
 
-        source: "image://icontheme/" + model.iconName
-        sourceSize.width: height
-        sourceSize.height: height
         width: height
         height: width
-        cache: true
 
+        source: model.iconName
         visible: !dragStarted
 
         ColorOverlay {

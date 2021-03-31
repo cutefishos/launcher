@@ -24,7 +24,8 @@ Item {
         sourceSize: Qt.size(width, height)
         fillMode: Image.PreserveAspectCrop
         clip: true
-        cache: false
+        cache: true
+        smooth: false
     }
 
     FastBlur {
@@ -127,6 +128,7 @@ Item {
             Layout.fillHeight: true
             Layout.fillWidth: true
 
+            Keys.enabled: true
             Keys.forwardTo: grid
 
             LauncherGridView {
@@ -147,6 +149,8 @@ Item {
                             event.key === Qt.Key_Up ||
                             event.key === Qt.Key_Down) {
                         return
+                    } else {
+                        textField.forceActiveFocus()
                     }
                 }
 
@@ -198,6 +202,7 @@ Item {
             if (visible) {
                 textField.focus = false
                 grid.focus = true
+                grid.forceActiveFocus()
             } else {
                 textField.text = ""
             }

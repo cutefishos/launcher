@@ -25,6 +25,7 @@ set(SRCS
     src/ucunits.cpp
     src/wallpaper.cpp
     src/listmodelmanager.cpp
+    src/iconitem.cpp
 )
 
 set(RESOURCES
