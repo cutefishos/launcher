@@ -23,10 +23,9 @@ set(SRCS
     src/main.cpp
     src/pagemodel.cpp
     src/ucunits.cpp
+    src/wallpaper.cpp
     src/listmodelmanager.cpp
     src/iconitem.cpp
-    src/wallpaperitem.cpp
-    src/modelmanager.cpp
 )
 
 set(RESOURCES

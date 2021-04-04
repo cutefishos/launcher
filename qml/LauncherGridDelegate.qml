@@ -69,8 +69,10 @@ Item {
         }
     }
 
-    Meui.TopLevelMenu {
+    Menu {
         id: _itemMenu
+
+        modal: true
 
         MenuItem {
             text: qsTr("Open")

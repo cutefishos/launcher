@@ -25,7 +25,7 @@
 #include "launcheritem.h"
 #include "launchermodel.h"
 #include "pagemodel.h"
-#include "wallpaperitem.h"
+#include "wallpaper.h"
 #include "iconitem.h"
 
 #include <QDebug>
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<LauncherItem>(uri, 1, 0, "LauncherItem", "cannot init application");
     qmlRegisterType<LauncherModel>(uri, 1, 0, "LauncherModel");
     qmlRegisterType<PageModel>(uri, 1, 0, "PageModel");
-    qmlRegisterType<WallpaperItem>(uri, 1, 0, "WallpaperItem");
+    qmlRegisterType<Wallpaper>(uri, 1, 0, "Wallpaper");
     qmlRegisterType<IconItem>(uri, 1, 0, "IconItem");
 
     QApplication app(argc, argv);
