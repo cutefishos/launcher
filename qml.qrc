@@ -4,5 +4,6 @@
         <file>qml/LauncherGridDelegate.qml</file>
         <file>qml/PageView.qml</file>
         <file>qml/LauncherGridView.qml</file>
+        <file>qml/AppView.qml</file>
     </qresource>
 </RCC>

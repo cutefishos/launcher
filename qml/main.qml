@@ -13,19 +13,9 @@ Item {
     property real horizontalSpacing: root.width * 0.01
     property real verticalSpacing: root.height * 0.01
 
-    Wallpaper {
-        id: backend
-    }
-
-    Image {
+    WallpaperItem {
         id: wallpaper
         anchors.fill: parent
-        source: "file://" + backend.wallpaper
-        sourceSize: Qt.size(width, height)
-        fillMode: Image.PreserveAspectCrop
-        clip: true
-        cache: true
-        smooth: false
     }
 
     FastBlur {
@@ -39,7 +29,7 @@ Item {
         anchors.fill: parent
         source: wallpaperBlur
         color: "#000000"
-        opacity: 0.6
+        opacity: 0.5
         visible: true
     }
 
