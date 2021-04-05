@@ -69,7 +69,7 @@ Item {
         }
     }
 
-    Meui.TopLevelMenu {
+    Meui.DesktopMenu {
         id: _itemMenu
 
         MenuItem {
