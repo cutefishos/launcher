@@ -134,8 +134,8 @@ Item {
             LauncherGridView {
                 id: grid
                 anchors.fill: parent
-                anchors.leftMargin: gridItem.width * 0.04
-                anchors.rightMargin: gridItem.width * 0.04
+                anchors.leftMargin: gridItem.width * 0.07
+                anchors.rightMargin: gridItem.width * 0.07
                 Layout.alignment: Qt.AlignHCenter
                 focus: true
 
