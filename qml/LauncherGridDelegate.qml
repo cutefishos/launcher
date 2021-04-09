@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 import Cutefish.Launcher 1.0
 
 Item {
@@ -36,7 +36,7 @@ Item {
 
 //    Rectangle {
 //        anchors.fill: parent
-//        radius: Meui.Theme.bigRadius
+//        radius: FishUI.Theme.bigRadius
 //        color: "black"
 //        opacity: 0.5
 //    }
@@ -48,7 +48,7 @@ Item {
             horizontalCenter: parent.horizontalCenter
             top: parent.top
             bottom: label.top
-            margins: Meui.Units.largeSpacing * 2
+            margins: FishUI.Units.largeSpacing * 2
         }
 
         property real size: height
@@ -69,7 +69,7 @@ Item {
         }
     }
 
-    Meui.DesktopMenu {
+    FishUI.DesktopMenu {
         id: _itemMenu
 
         MenuItem {
@@ -126,7 +126,7 @@ Item {
         anchors {
             horizontalCenter: parent.horizontalCenter
             bottom: parent.bottom
-            margins: Meui.Units.smallSpacing
+            margins: FishUI.Units.smallSpacing
         }
 
         visible: !dragStarted
@@ -136,7 +136,7 @@ Item {
         textFormat: Text.PlainText
         wrapMode: "WordWrap"
         horizontalAlignment: Text.AlignHCenter
-        width: parent.width - 2 * Meui.Units.smallSpacing
+        width: parent.width - 2 * FishUI.Units.smallSpacing
         height: fontMetrics.height
         color: "white"
     }

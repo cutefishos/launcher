@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 
 import Cutefish.Launcher 1.0
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 Item {
     id: root
@@ -68,7 +68,7 @@ Item {
         Item {
             id: searchItem
             Layout.fillWidth: true
-            height: fontMetrics.height + Meui.Units.largeSpacing
+            height: fontMetrics.height + FishUI.Units.largeSpacing
 
             TextMetrics {
                 id: fontMetrics
@@ -81,8 +81,8 @@ Item {
                 width: searchItem.width * 0.2
                 height: parent.height
 
-                leftPadding: Meui.Units.largeSpacing
-                rightPadding: Meui.Units.largeSpacing
+                leftPadding: FishUI.Units.largeSpacing
+                rightPadding: FishUI.Units.largeSpacing
 
                 selectByMouse: true
 
