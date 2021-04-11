@@ -1,12 +1,13 @@
 import QtQuick 2.12
+import QtQuick.Window 2.12
 import FishUI 1.0 as FishUI
 import Cutefish.Launcher 1.0
 
 PageView {
     id: gridView
 
-    property int iconSize: gridView.width > gridView.height ? gridView.width * 0.1 + root.horizontalSpacing
-                                                            : gridView.height * 0.1 + root.verticalSpacing
+    property int iconSize: gridView.width > gridView.height ? gridView.width * 0.1 * Screen.devicePixelRatio + root.horizontalSpacing
+                                                            : gridView.height * 0.1 * Screen.devicePixelRatio + root.verticalSpacing
 
     property int cellWidth: {
         var extraWidth = calcExtraSpacing(iconSize, gridView.width)
