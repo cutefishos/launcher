@@ -10,8 +10,8 @@ import FishUI 1.0 as FishUI
 Item {
     id: root
 
-    property real horizontalSpacing: root.width * 0.01
-    property real verticalSpacing: root.height * 0.01
+    property real horizontalSpacing: root.width * 0.01 * Screen.devicePixelRatio
+    property real verticalSpacing: root.height * 0.01 * Screen.devicePixelRatio
 
     Wallpaper {
         id: backend
@@ -59,11 +59,11 @@ Item {
         id: mainLayout
         anchors.fill: parent
         anchors.leftMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.x : 0
-        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + root.verticalSpacing * 3: 0
+        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + root.verticalSpacing * 2 * Screen.devicePixelRatio : 0
         anchors.rightMargin: launcher.screenRect.width - (launcher.screenAvailableRect.x + launcher.screenAvailableRect.width)
         anchors.bottomMargin: launcher.screenRect.height - (launcher.screenAvailableRect.y + launcher.screenAvailableRect.height - root.verticalSpacing)
 
-        spacing: root.verticalSpacing * 2
+        spacing: root.verticalSpacing * Screen.devicePixelRatio
 
         Item {
             id: searchItem

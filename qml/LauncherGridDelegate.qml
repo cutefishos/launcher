@@ -48,7 +48,11 @@ Item {
             horizontalCenter: parent.horizontalCenter
             top: parent.top
             bottom: label.top
-            margins: FishUI.Units.largeSpacing * 2
+            // margins: FishUI.Units.largeSpacing * 2
+            leftMargin: Math.min(FishUI.Units.largeSpacing * 2, root.horizontalSpacing)
+            rightMargin: Math.min(FishUI.Units.largeSpacing * 2, root.horizontalSpacing)
+            topMargin: Math.min(FishUI.Units.largeSpacing * 2, root.verticalSpacing)
+            bottomMargin: Math.min(FishUI.Units.largeSpacing * 2, root.verticalSpacing)
         }
 
         property real size: height

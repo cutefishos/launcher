@@ -6,8 +6,8 @@ import Cutefish.Launcher 1.0
 PageView {
     id: gridView
 
-    property int iconSize: gridView.width > gridView.height ? gridView.width * 0.1 + root.horizontalSpacing
-                                                            : gridView.height * 0.1 + root.verticalSpacing
+    property int iconSize: gridView.width > gridView.height ? gridView.width * 0.09 + root.horizontalSpacing
+                                                            : gridView.height * 0.09 + root.verticalSpacing
 
     property int cellWidth: {
         var extraWidth = calcExtraSpacing(iconSize, gridView.width)
