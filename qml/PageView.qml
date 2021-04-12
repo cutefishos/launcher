@@ -42,11 +42,11 @@ Item {
 
         maximumFlickVelocity: 9000
 
-         preferredHighlightBegin: 0
-         preferredHighlightEnd: 0
+        preferredHighlightBegin: 0
+        preferredHighlightEnd: 0
 
-         cacheBuffer: pageView.width * pageView.count
-         boundsBehavior: Flickable.DragOverBounds
+        cacheBuffer: pageView.width * pageView.count
+        boundsBehavior: Flickable.DragOverBounds
         clip: true
 
         model: Math.ceil(pagedGrid.count / pageCount)
