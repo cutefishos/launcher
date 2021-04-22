@@ -35,14 +35,14 @@ Item {
         id: wallpaperBlur
         anchors.fill: parent
         source: wallpaper
-        radius: 64
+        radius: 72
     }
 
     ColorOverlay {
         anchors.fill: parent
         source: wallpaperBlur
         color: "#000000"
-        opacity: 0.6
+        opacity: 0.4
         visible: true
     }
 
