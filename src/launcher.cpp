@@ -38,7 +38,7 @@ Launcher::Launcher(QQuickView *w)
     engine()->rootContext()->setContextProperty("launcher", this);
 
     setFlags(Qt::FramelessWindowHint);
-    setResizeMode(QQuickView::SizeViewToRootObject);
+    setResizeMode(QQuickView::SizeRootObjectToView);
     setClearBeforeRendering(true);
     setScreen(qApp->primaryScreen());
     onGeometryChanged();

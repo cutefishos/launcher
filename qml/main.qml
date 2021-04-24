@@ -10,8 +10,9 @@ import FishUI 1.0 as FishUI
 Item {
     id: root
 
-    width: launcher.screenRect.width
-    height: launcher.screenRect.height
+    // The window manager is forced to set the window size.
+    // width: launcher.screenRect.width
+    // height: launcher.screenRect.height
 
     property real horizontalSpacing: root.width * 0.01 * Screen.devicePixelRatio
     property real verticalSpacing: root.height * 0.01 * Screen.devicePixelRatio
