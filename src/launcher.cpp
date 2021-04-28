@@ -94,8 +94,6 @@ void Launcher::onAvailableGeometryChanged(const QRect &geometry)
 
 void Launcher::showEvent(QShowEvent *e)
 {
-    onGeometryChanged();
-
     KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
 
     QQuickView::showEvent(e);
