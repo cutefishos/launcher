@@ -30,14 +30,13 @@
 Launcher::Launcher(QQuickView *w)
   : QQuickView(w)
 {
-    m_screenRect = qApp->primaryScreen()->geometry();
     m_screenAvailableRect = qApp->primaryScreen()->availableGeometry();
 
     new LauncherAdaptor(this);
 
     engine()->rootContext()->setContextProperty("launcher", this);
 
-    setFlags(Qt::FramelessWindowHint);
+    setFlags(Qt::FramelessWindowHint | Qt::CoverWindow);
     setResizeMode(QQuickView::SizeRootObjectToView);
     setClearBeforeRendering(true);
     setScreen(qApp->primaryScreen());
@@ -80,10 +79,11 @@ QRect Launcher::screenAvailableRect()
 
 void Launcher::onGeometryChanged()
 {
-    m_screenRect = qApp->primaryScreen()->geometry();
-    setGeometry(qApp->primaryScreen()->geometry());
-
-    emit screenRectChanged();
+    if (m_screenRect != qApp->primaryScreen()->geometry()) {
+        m_screenRect = qApp->primaryScreen()->geometry();
+        setGeometry(m_screenRect);
+        emit screenRectChanged();
+    }
 }
 
 void Launcher::onAvailableGeometryChanged(const QRect &geometry)
@@ -97,6 +97,12 @@ void Launcher::showEvent(QShowEvent *e)
     KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
 
     QQuickView::showEvent(e);
+}
+
+void Launcher::resizeEvent(QResizeEvent *e)
+{
+    // The window manager forces the size.
+    e->ignore();
 }
 
 void Launcher::onActiveChanged()

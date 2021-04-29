@@ -10,12 +10,11 @@ import FishUI 1.0 as FishUI
 Item {
     id: root
 
-    // The window manager is forced to set the window size.
-    // width: launcher.screenRect.width
-    // height: launcher.screenRect.height
+    width: launcher.screenRect.width
+    height: launcher.screenRect.height
 
-    property real horizontalSpacing: root.width * 0.01 * Screen.devicePixelRatio
-    property real verticalSpacing: root.height * 0.01 * Screen.devicePixelRatio
+    property real horizontalSpacing: launcher.screenRect.width * 0.01 * Screen.devicePixelRatio
+    property real verticalSpacing: launcher.screenRect.height * 0.01 * Screen.devicePixelRatio
 
     Wallpaper {
         id: backend
@@ -25,10 +24,11 @@ Item {
         id: wallpaper
         anchors.fill: parent
         source: "file://" + backend.wallpaper
-        sourceSize: Qt.size(width, height)
+        sourceSize: Qt.size(auncher.screenRect.width,
+                            launcher.screenRect.height)
         fillMode: Image.PreserveAspectCrop
-        clip: true
-        cache: true
+        asynchronous: false
+        cache: false
         smooth: false
     }
 

@@ -49,6 +49,7 @@ private slots:
 
 protected:
     void showEvent(QShowEvent *e) override;
+    void resizeEvent(QResizeEvent *e) override;
 
 private:
     void onActiveChanged();
