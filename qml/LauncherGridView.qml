@@ -6,8 +6,8 @@ import Cutefish.Launcher 1.0
 PageView {
     id: gridView
 
-    property int iconSize: gridView.width > gridView.height ? gridView.width * 0.09 + root.horizontalSpacing
-                                                            : gridView.height * 0.09 + root.verticalSpacing
+    property int iconSize: gridView.width > gridView.height ? gridView.width * 0.09 + root.horizontalSpacing * 2
+                                                            : gridView.height * 0.09 + root.verticalSpacing * 2
 
     property int cellWidth: {
         var extraWidth = calcExtraSpacing(iconSize, gridView.width)
@@ -31,10 +31,10 @@ PageView {
         LauncherGridDelegate {
             id: delegate
             anchors.fill: parent
-            anchors.leftMargin: root.horizontalSpacing
-            anchors.rightMargin: root.horizontalSpacing
-            anchors.topMargin: root.verticalSpacing
-            anchors.bottomMargin: root.verticalSpacing
+            anchors.leftMargin: root.horizontalSpacing * 1.5
+            anchors.rightMargin: root.horizontalSpacing * 1.5
+            anchors.topMargin: root.verticalSpacing * 1.5
+            anchors.bottomMargin: root.verticalSpacing * 1.5
         }
     }
 
