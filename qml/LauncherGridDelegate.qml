@@ -138,10 +138,11 @@ Item {
         text: model.name
         elide: Text.ElideRight
         textFormat: Text.PlainText
+        maximumLineCount: 2
         wrapMode: "WordWrap"
         horizontalAlignment: Text.AlignHCenter
         width: parent.width - 2 * FishUI.Units.smallSpacing
-        height: fontMetrics.height
+        height: fontMetrics.height * 2
         color: "white"
     }
 }

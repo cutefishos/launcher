@@ -15,8 +15,8 @@ PageView {
     }
 
     property int cellHeight: {
-        var extraHeight = calcExtraSpacing(iconSize, gridView.height);
-        return iconSize + extraHeight;
+        var extraHeight = calcExtraSpacing(iconSize, gridView.height)
+        return iconSize + extraHeight
     }
 
     columns: gridView.width / cellWidth

@@ -24,7 +24,7 @@ Item {
         id: wallpaper
         anchors.fill: parent
         source: "file://" + backend.wallpaper
-        sourceSize: Qt.size(auncher.screenRect.width,
+        sourceSize: Qt.size(launcher.screenRect.width,
                             launcher.screenRect.height)
         fillMode: Image.PreserveAspectCrop
         asynchronous: false
@@ -104,7 +104,7 @@ Item {
                     text: textField.placeholderText
                     font: textField.font
                     color: "white"
-                    opacity: 0.5
+                    opacity: 0.65
                     visible: !textField.length && !textField.preeditText && (!textField.activeFocus || textField.horizontalAlignment !== Qt.AlignHCenter)
                     elide: Text.ElideRight
                     wrapMode: Text.NoWrap
@@ -181,7 +181,7 @@ Item {
                 width: 10
                 height: width
                 radius: width / 2
-                color: index === pageIndicator.currentIndex ? "white" : Qt.darker("white")
+                color: index === pageIndicator.currentIndex ? "white" : Qt.darker("white", 1.6)
             }
         }
     }
