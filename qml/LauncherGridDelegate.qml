@@ -17,9 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.9
-import QtQuick.Controls 2.1
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
+import QtQuick.Window 2.12
 import FishUI 1.0 as FishUI
 import Cutefish.Launcher 1.0
 
@@ -67,10 +68,10 @@ Item {
             horizontalCenter: parent.horizontalCenter
             top: parent.top
             bottom: label.top
-            leftMargin: Math.min(FishUI.Units.largeSpacing * 2, root.maxSpacing)
-            rightMargin: Math.min(FishUI.Units.largeSpacing * 2, root.maxSpacing)
-            topMargin: Math.min(FishUI.Units.largeSpacing * 2, root.maxSpacing)
-            bottomMargin: Math.min(FishUI.Units.largeSpacing * 2, root.maxSpacing)
+            leftMargin: Math.max(FishUI.Units.largeSpacing * 2, root.maxSpacing * Screen.devicePixelRatio)
+            rightMargin: Math.max(FishUI.Units.largeSpacing * 2, root.maxSpacing * Screen.devicePixelRatio)
+            topMargin: Math.max(FishUI.Units.largeSpacing * 2, root.maxSpacing * Screen.devicePixelRatio)
+            bottomMargin: Math.max(FishUI.Units.largeSpacing * 2, root.maxSpacing * Screen.devicePixelRatio)
         }
 
         property real size: height
