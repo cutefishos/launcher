@@ -1,26 +1,45 @@
+/*
+ * Copyright (C) 2021 CutefishOS.
+ *
+ * Author:     revenmartin <revenmartin@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import FishUI 1.0 as FishUI
 import Cutefish.Launcher 1.0
 
 PageView {
-    id: gridView
+    id: control
 
-    property int iconSize: gridView.width > gridView.height ? gridView.width * 0.09 + root.horizontalSpacing * 2
-                                                            : gridView.height * 0.09 + root.verticalSpacing * 2
+    property int iconSize: control.width > control.height ? control.width * 0.09 + root.horizontalSpacing * 2 + root.maxSpacing
+                                                          : control.height * 0.09 + root.verticalSpacing * 2 + root.maxSpacing
 
     property int cellWidth: {
-        var extraWidth = calcExtraSpacing(iconSize, gridView.width)
+        var extraWidth = calcExtraSpacing(iconSize, control.width)
         return iconSize + extraWidth
     }
 
     property int cellHeight: {
-        var extraHeight = calcExtraSpacing(iconSize, gridView.height)
+        var extraHeight = calcExtraSpacing(iconSize, control.height)
         return iconSize + extraHeight
     }
 
-    columns: gridView.width / cellWidth
-    rows: gridView.height / cellHeight
+    columns: control.width / cellWidth
+    rows: control.height / cellHeight
 
     model: launcherModel
 
@@ -31,10 +50,10 @@ PageView {
         LauncherGridDelegate {
             id: delegate
             anchors.fill: parent
-            anchors.leftMargin: root.horizontalSpacing * 1.5
-            anchors.rightMargin: root.horizontalSpacing * 1.5
-            anchors.topMargin: root.verticalSpacing * 1.5
-            anchors.bottomMargin: root.verticalSpacing * 1.5
+            anchors.leftMargin: root.maxSpacing
+            anchors.rightMargin: root.maxSpacing
+            anchors.topMargin: root.maxSpacing
+            anchors.bottomMargin: root.maxSpacing
         }
     }
 
