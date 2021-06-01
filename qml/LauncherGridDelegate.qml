@@ -160,6 +160,7 @@ Item {
         maximumLineCount: 2
         wrapMode: "WordWrap"
         horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignTop
         width: parent.width - 2 * FishUI.Units.smallSpacing
         height: fontMetrics.height * 2
         color: "white"

@@ -83,7 +83,7 @@ Item {
         id: mainLayout
         anchors.fill: parent
         anchors.leftMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.x : 0
-        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + root.verticalSpacing * 2 : 0
+        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + root.verticalSpacing * 4 : 0
         anchors.rightMargin: launcher.screenRect.width - (launcher.screenAvailableRect.x + launcher.screenAvailableRect.width)
         anchors.bottomMargin: launcher.screenRect.height - (launcher.screenAvailableRect.y + launcher.screenAvailableRect.height - root.verticalSpacing)
 
@@ -194,7 +194,7 @@ Item {
             currentIndex: grid.currentPage
             onCurrentIndexChanged: grid.currentPage = currentIndex
             interactive: true
-            spacing: root.horizontalSpacing / 2
+            spacing: FishUI.Units.largeSpacing
             Layout.alignment: Qt.AlignHCenter
 
             delegate: Rectangle {
