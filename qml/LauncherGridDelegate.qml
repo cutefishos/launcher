@@ -54,12 +54,12 @@ Item {
         }
     }
 
-//    Rectangle {
-//        anchors.fill: parent
-//        radius: FishUI.Theme.bigRadius
-//        color: "black"
-//        opacity: 0.5
-//    }
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.LeftButton
+        z: -1
+        onClicked: root.hideLauncher()
+    }
 
     IconItem {
         id: icon

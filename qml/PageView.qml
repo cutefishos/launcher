@@ -39,12 +39,17 @@ Item {
     MouseArea {
         anchors.fill: parent
         propagateComposedEvents: true
+        acceptedButtons: Qt.LeftButton
 
         onWheel: {
             if (wheel.angleDelta.y > 0)
                 pageView.decrementCurrentIndex();
             else
                 pageView.incrementCurrentIndex();
+        }
+
+        onClicked: {
+            root.hideLauncher()
         }
     }
 
@@ -67,6 +72,13 @@ Item {
         cacheBuffer: pageView.width * pageView.count
         boundsBehavior: Flickable.DragOverBounds
         clip: true
+
+        // Blank area
+        MouseArea {
+            anchors.fill: parent
+            z: -1
+            onClicked: root.hideLauncher()
+        }
 
         model: Math.ceil(pagedGrid.count / pageCount)
         delegate: pageDelegate
