@@ -139,10 +139,14 @@ Item {
                     border.width: 0
                 }
 
-                onTextChanged: {
-                    launcherModel.search(text)
+                Timer {
+                    id: searchTimer
+                    interval: 200
+                    repeat: false
+                    onTriggered: launcherModel.search(textField.text)
                 }
 
+                onTextChanged: searchTimer.start()
                 Keys.onEscapePressed: hideLauncher()
             }
         }
