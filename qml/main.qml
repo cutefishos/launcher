@@ -177,8 +177,13 @@ Item {
                             event.key === Qt.Key_Up ||
                             event.key === Qt.Key_Down) {
                         return
-                    } else {
+                    }
+
+                    // First input text
+                    if ((event.key >= Qt.Key_A && event.key <= Qt.Key_Z) ||
+                            event.key >= Qt.Key_0 && event.key <= Qt.Key_9) {
                         textField.forceActiveFocus()
+                        textField.text = event.text
                     }
                 }
 
