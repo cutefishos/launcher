@@ -39,17 +39,12 @@ Item {
     MouseArea {
         anchors.fill: parent
         propagateComposedEvents: true
-        acceptedButtons: Qt.LeftButton
 
         onWheel: {
             if (wheel.angleDelta.y > 0)
                 pageView.decrementCurrentIndex();
             else
                 pageView.incrementCurrentIndex();
-        }
-
-        onClicked: {
-            root.hideLauncher()
         }
     }
 

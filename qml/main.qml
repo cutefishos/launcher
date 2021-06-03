@@ -141,12 +141,19 @@ Item {
 
                 Timer {
                     id: searchTimer
-                    interval: 200
+                    interval: 500
                     repeat: false
                     onTriggered: launcherModel.search(textField.text)
                 }
 
-                onTextChanged: searchTimer.start()
+                onTextChanged: {
+                    if (textField.text === "") {
+                        // Switch directly to normal mode
+                        launcherModel.search("")
+                    } else {
+                        searchTimer.start()
+                    }
+                }
                 Keys.onEscapePressed: hideLauncher()
             }
         }
