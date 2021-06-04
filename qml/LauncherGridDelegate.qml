@@ -68,13 +68,12 @@ Item {
             horizontalCenter: parent.horizontalCenter
             top: parent.top
             bottom: label.top
-            leftMargin: Math.max(FishUI.Units.largeSpacing * 2, root.maxSpacing * Screen.devicePixelRatio)
-            rightMargin: Math.max(FishUI.Units.largeSpacing * 2, root.maxSpacing * Screen.devicePixelRatio)
-            topMargin: Math.max(FishUI.Units.largeSpacing * 2, root.maxSpacing * Screen.devicePixelRatio)
-            bottomMargin: Math.max(FishUI.Units.largeSpacing * 2, root.maxSpacing * Screen.devicePixelRatio)
-        }
 
-        property real size: height
+            leftMargin: root.maxSpacing * 2
+            rightMargin: root.maxSpacing * 2
+            topMargin: root.maxSpacing * 2
+            bottomMargin: root.maxSpacing * 2
+        }
 
         width: height
         height: width

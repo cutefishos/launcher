@@ -25,8 +25,7 @@ import Cutefish.Launcher 1.0
 PageView {
     id: control
 
-    property int iconSize: control.width > control.height ? control.width * 0.09 + root.horizontalSpacing * 2 + root.maxSpacing
-                                                          : control.height * 0.09 + root.verticalSpacing * 2 + root.maxSpacing
+    property int iconSize: 128 + root.maxSpacing * 2
 
     property int cellWidth: {
         var extraWidth = calcExtraSpacing(iconSize, control.width)
@@ -50,10 +49,6 @@ PageView {
         LauncherGridDelegate {
             id: delegate
             anchors.fill: parent
-            anchors.leftMargin: root.maxSpacing
-            anchors.rightMargin: root.maxSpacing
-            anchors.topMargin: root.maxSpacing
-            anchors.bottomMargin: root.maxSpacing
         }
     }
 

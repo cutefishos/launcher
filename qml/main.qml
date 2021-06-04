@@ -83,11 +83,12 @@ Item {
         id: mainLayout
         anchors.fill: parent
         anchors.leftMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.x : 0
-        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + root.verticalSpacing * 4 : 0
+        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + root.maxSpacing * 2 : 0
         anchors.rightMargin: launcher.screenRect.width - (launcher.screenAvailableRect.x + launcher.screenAvailableRect.width)
         anchors.bottomMargin: launcher.screenRect.height - (launcher.screenAvailableRect.y + launcher.screenAvailableRect.height - root.verticalSpacing)
 
-        spacing: root.verticalSpacing
+        // spacing: root.verticalSpacing
+        spacing: 0
 
         Item {
             id: searchItem
