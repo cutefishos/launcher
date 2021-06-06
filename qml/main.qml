@@ -190,17 +190,19 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 focus: true
 
-                scale: root.launcherVisible ? 1.0 : 1.05
+                scale: root.launcherVisible ? 1.0 : 1.2
                 Behavior on scale {
                     NumberAnimation {
-                        duration: 250
+                        easing.type: Easing.OutCubic
+                        duration: 180
                     }
                 }
 
                 opacity: root.launcherVisible ? 1.0 : 0.0
                 Behavior on opacity {
                     NumberAnimation {
-                        duration: 100
+                        easing.type: Easing.OutCubic
+                        duration: 240
                     }
                 }
 
