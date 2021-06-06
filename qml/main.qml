@@ -77,7 +77,7 @@ Item {
 
         Behavior on opacity {
             NumberAnimation {
-                duration: 400
+                duration: 250
             }
         }
     }
@@ -190,6 +190,20 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 focus: true
 
+                scale: root.launcherVisible ? 1.0 : 1.05
+                Behavior on scale {
+                    NumberAnimation {
+                        duration: 250
+                    }
+                }
+
+                opacity: root.launcherVisible ? 1.0 : 0.0
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 100
+                    }
+                }
+
                 Keys.enabled: true
                 Keys.onPressed: {
                     if (event.key === Qt.Key_Escape)
@@ -233,7 +247,7 @@ Item {
                 width: 10
                 height: width
                 radius: width / 2
-                color: index === pageIndicator.currentIndex ? "white" : Qt.darker("white", 1.6)
+                color: index === pageIndicator.currentIndex ? "white" : Qt.darker("white", 1.8)
             }
         }
     }
