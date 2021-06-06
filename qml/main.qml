@@ -35,6 +35,7 @@ Item {
     property real horizontalSpacing: launcher.screenRect.width * 0.01
     property real verticalSpacing: launcher.screenRect.height * 0.01
     property real maxSpacing: horizontalSpacing > verticalSpacing ? horizontalSpacing : verticalSpacing
+    property bool launcherVisible: launcher.visible
 
     Wallpaper {
         id: backend
@@ -56,15 +57,29 @@ Item {
         id: wallpaperBlur
         anchors.fill: parent
         source: wallpaper
-        radius: 72
+        cached: true
+        radius: root.launcherVisible ? 72 : 0
+        visible: true
+
+        Behavior on radius {
+            NumberAnimation {
+                duration: 300
+            }
+        }
     }
 
     ColorOverlay {
         anchors.fill: parent
         source: wallpaperBlur
         color: "#000000"
-        opacity: 0.4
         visible: true
+        opacity: launcherVisible ? 0.4 : 0.0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 400
+            }
+        }
     }
 
     LauncherModel {
