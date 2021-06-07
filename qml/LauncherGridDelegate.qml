@@ -54,13 +54,6 @@ Item {
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.LeftButton
-        z: -1
-        onClicked: root.hideLauncher()
-    }
-
     IconItem {
         id: icon
 

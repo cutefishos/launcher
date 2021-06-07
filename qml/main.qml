@@ -35,7 +35,24 @@ Item {
     property real horizontalSpacing: launcher.screenRect.width * 0.01
     property real verticalSpacing: launcher.screenRect.height * 0.01
     property real maxSpacing: horizontalSpacing > verticalSpacing ? horizontalSpacing : verticalSpacing
-    property bool launcherVisible: launcher.visible
+    property bool showed: launcher.showed
+    opacity: 1.0
+
+    onShowedChanged: {
+        if (showed)
+            root.opacity = 1.0
+        else
+            closeOpacityAni.restart()
+    }
+
+    NumberAnimation {
+        id: closeOpacityAni
+        from: 1
+        to: 0
+        target: root
+        property: "opacity"
+        duration: 200
+    }
 
     Wallpaper {
         id: backend
@@ -58,7 +75,7 @@ Item {
         anchors.fill: parent
         source: wallpaper
         cached: true
-        radius: root.launcherVisible ? 72 : 0
+        radius: root.showed ? 72 : 0
         visible: true
 
         Behavior on radius {
@@ -73,7 +90,7 @@ Item {
         source: wallpaperBlur
         color: "#000000"
         visible: true
-        opacity: launcherVisible ? 0.4 : 0.0
+        opacity: showed ? 0.4 : 0.0
 
         Behavior on opacity {
             NumberAnimation {
@@ -90,7 +107,7 @@ Item {
         target: launcherModel
 
         function onApplicationLaunched() {
-            hideLauncher()
+            launcher.hideWindow()
         }
     }
 
@@ -120,6 +137,8 @@ Item {
                 anchors.centerIn: parent
                 width: searchItem.width * 0.2
                 height: parent.height
+
+                opacity: root.showed ? 1.0 : 0.0
 
                 leftPadding: FishUI.Units.largeSpacing
                 rightPadding: FishUI.Units.largeSpacing
@@ -170,7 +189,7 @@ Item {
                         searchTimer.start()
                     }
                 }
-                Keys.onEscapePressed: hideLauncher()
+                Keys.onEscapePressed: launcher.hideWindow()
             }
         }
 
@@ -190,7 +209,7 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 focus: true
 
-                scale: root.launcherVisible ? 1.0 : 1.2
+                scale: root.showed ? 1.0 : 1.2
                 Behavior on scale {
                     NumberAnimation {
                         easing.type: Easing.OutCubic
@@ -198,7 +217,7 @@ Item {
                     }
                 }
 
-                opacity: root.launcherVisible ? 1.0 : 0.0
+                opacity: root.showed ? 1.0 : 0.0
                 Behavior on opacity {
                     NumberAnimation {
                         easing.type: Easing.OutCubic
@@ -209,7 +228,7 @@ Item {
                 Keys.enabled: true
                 Keys.onPressed: {
                     if (event.key === Qt.Key_Escape)
-                        hideLauncher()
+                        launcher.hideWindow()
 
                     if (event.key === Qt.Key_Left ||
                             event.key === Qt.Key_Right ||
@@ -244,6 +263,7 @@ Item {
             interactive: true
             spacing: FishUI.Units.largeSpacing
             Layout.alignment: Qt.AlignHCenter
+            opacity: root.showed ? 1.0 : 0.0
 
             delegate: Rectangle {
                 width: 10
@@ -259,12 +279,8 @@ Item {
         z: -1
 
         onClicked: {
-            hideLauncher()
+            launcher.hideWindow()
         }
-    }
-
-    function hideLauncher() {
-        launcher.hide()
     }
 
     Connections {

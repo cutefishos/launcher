@@ -24,11 +24,14 @@
 #include <QDBusConnection>
 #include <QQmlContext>
 #include <QScreen>
+#include <QTimer>
 
 #include <KWindowSystem>
 
 Launcher::Launcher(QQuickView *w)
   : QQuickView(w)
+  , m_hideTimer(new QTimer)
+  , m_showed(false)
 {
     m_screenAvailableRect = qApp->primaryScreen()->availableGeometry();
 
@@ -36,7 +39,8 @@ Launcher::Launcher(QQuickView *w)
 
     engine()->rootContext()->setContextProperty("launcher", this);
 
-    setFlags(Qt::FramelessWindowHint | Qt::CoverWindow);
+    setColor(Qt::transparent);
+    setFlags(Qt::FramelessWindowHint);
     setResizeMode(QQuickView::SizeRootObjectToView);
     setClearBeforeRendering(true);
     setScreen(qApp->primaryScreen());
@@ -46,25 +50,47 @@ Launcher::Launcher(QQuickView *w)
     setTitle(tr("Launcher"));
     setVisible(false);
 
+    // Let the animation in qml be hidden after the execution is complete
+    m_hideTimer->setInterval(200);
+    m_hideTimer->setSingleShot(true);
+    connect(m_hideTimer, &QTimer::timeout, this, [=] { setVisible(false); });
+
     connect(qApp->primaryScreen(), &QScreen::virtualGeometryChanged, this, &Launcher::onGeometryChanged);
     connect(qApp->primaryScreen(), &QScreen::geometryChanged, this, &Launcher::onGeometryChanged);
     connect(qApp->primaryScreen(), &QScreen::availableGeometryChanged, this, &Launcher::onAvailableGeometryChanged);
     connect(this, &QQuickView::activeChanged, this, &Launcher::onActiveChanged);
 }
 
-void Launcher::show()
+bool Launcher::showed()
 {
-    setVisible(true);
+    return m_showed;
 }
 
-void Launcher::hide()
+void Launcher::showWindow()
 {
-    setVisible(false);
+    if (m_hideTimer->isActive())
+        m_hideTimer->stop();
+
+    m_showed = true;
+    setVisible(true);
+    emit showedChanged();
+}
+
+void Launcher::hideWindow()
+{
+    if (m_hideTimer->isActive())
+        m_hideTimer->stop();
+
+    // Start to execute qml exit animation
+    m_showed = false;
+    emit showedChanged();
+
+    m_hideTimer->start();
 }
 
 void Launcher::toggle()
 {
-    isVisible() ? hide() : show();
+    isVisible() ? Launcher::hideWindow() : Launcher::showWindow();
 }
 
 QRect Launcher::screenRect()

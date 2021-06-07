@@ -22,19 +22,23 @@
 
 #include <QGuiApplication>
 #include <QQuickView>
+#include <QTimer>
 
 class Launcher : public QQuickView
 {
     Q_OBJECT
     Q_PROPERTY(QRect screenRect READ screenRect NOTIFY screenRectChanged)
     Q_PROPERTY(QRect screenAvailableRect READ screenAvailableRect NOTIFY screenAvailableGeometryChanged)
+    Q_PROPERTY(bool showed READ showed NOTIFY showedChanged)
 
 public:
     Launcher(QQuickView *w = nullptr);
 
-    void show();
-    void hide();
-    void toggle();
+    bool showed();
+
+    Q_INVOKABLE void showWindow();
+    Q_INVOKABLE void hideWindow();
+    Q_INVOKABLE void toggle();
 
     QRect screenRect();
     QRect screenAvailableRect();
@@ -42,6 +46,7 @@ public:
 signals:
     void screenRectChanged();
     void screenAvailableGeometryChanged();
+    void showedChanged();
 
 private slots:
     void onGeometryChanged();
@@ -57,6 +62,8 @@ private:
 private:
     QRect m_screenRect;
     QRect m_screenAvailableRect;
+    QTimer *m_hideTimer;
+    bool m_showed;
 };
 
 #endif // LAUNCHER_H

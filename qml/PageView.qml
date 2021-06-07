@@ -68,11 +68,11 @@ Item {
         boundsBehavior: Flickable.DragOverBounds
         clip: true
 
-        // Blank area
+//        // Blank area
         MouseArea {
             anchors.fill: parent
             z: -1
-            onClicked: root.hideLauncher()
+            onClicked: launcher.hideWindow()
         }
 
         model: Math.ceil(pagedGrid.count / pageCount)
