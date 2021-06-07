@@ -36,22 +36,60 @@ Item {
     property real verticalSpacing: launcher.screenRect.height * 0.01
     property real maxSpacing: horizontalSpacing > verticalSpacing ? horizontalSpacing : verticalSpacing
     property bool showed: launcher.showed
-    opacity: 1.0
 
     onShowedChanged: {
-        if (showed)
-            root.opacity = 1.0
-        else
-            closeOpacityAni.restart()
+        rootOpacityAni.restart()
+        wallpaperColorAni.restart()
+        blurAnimation.restart()
+        appViewOpacityAni.restart()
+        appViewScaleAni.restart()
     }
 
     NumberAnimation {
-        id: closeOpacityAni
-        from: 1
-        to: 0
+        id: rootOpacityAni
+        from: root.showed ? 1 : 0
+        to: root.showed ? 0 : 1
         target: root
         property: "opacity"
         duration: 200
+    }
+
+    NumberAnimation {
+        id: blurAnimation
+        target: wallpaperBlur
+        property: "radius"
+        duration: 300
+        from: root.showed ? 72 : 0
+        to: root.showed ? 0 : 72
+    }
+
+    NumberAnimation {
+        id: wallpaperColorAni
+        target: wallpaperColor
+        property: "opacity"
+        from: root.showed ? 0.4 : 0.0
+        to: root.showed ? 0.0 : 0.4
+        duration: 250
+    }
+
+    NumberAnimation {
+        id: appViewScaleAni
+        target: appView
+        property: "scale"
+        easing.type: Easing.OutCubic
+        from: root.showed ? 1.0 : 1.2
+        to: root.showed ? 1.2 : 1.0
+        duration: 180
+    }
+
+    NumberAnimation {
+        id: appViewOpacityAni
+        target: appView
+        property: "opacity"
+        easing.type: Easing.OutCubic
+        from: root.showed ? 1.0 : 0.0
+        to: root.showed ? 0.0 : 1.0
+        duration: 240
     }
 
     Wallpaper {
@@ -75,28 +113,16 @@ Item {
         anchors.fill: parent
         source: wallpaper
         cached: true
-        radius: root.showed ? 72 : 0
         visible: true
-
-        Behavior on radius {
-            NumberAnimation {
-                duration: 300
-            }
-        }
     }
 
+
     ColorOverlay {
+        id: wallpaperColor
         anchors.fill: parent
         source: wallpaperBlur
         color: "#000000"
         visible: true
-        opacity: showed ? 0.4 : 0.0
-
-        Behavior on opacity {
-            NumberAnimation {
-                duration: 250
-            }
-        }
     }
 
     LauncherModel {
@@ -199,31 +225,15 @@ Item {
             Layout.fillWidth: true
 
             Keys.enabled: true
-            Keys.forwardTo: grid
+            Keys.forwardTo: appView
 
             LauncherGridView {
-                id: grid
+                id: appView
                 anchors.fill: parent
                 anchors.leftMargin: gridItem.width * 0.07
                 anchors.rightMargin: gridItem.width * 0.07
                 Layout.alignment: Qt.AlignHCenter
                 focus: true
-
-                scale: root.showed ? 1.0 : 1.2
-                Behavior on scale {
-                    NumberAnimation {
-                        easing.type: Easing.OutCubic
-                        duration: 180
-                    }
-                }
-
-                opacity: root.showed ? 1.0 : 0.0
-                Behavior on opacity {
-                    NumberAnimation {
-                        easing.type: Easing.OutCubic
-                        duration: 240
-                    }
-                }
 
                 Keys.enabled: true
                 Keys.onPressed: {
@@ -250,16 +260,16 @@ Item {
                     text: qsTr("Not found")
                     font.pointSize: 30
                     color: "white"
-                    visible: grid.count === 0
+                    visible: appView.count === 0
                 }
             }
         }
 
         PageIndicator {
             id: pageIndicator
-            count: grid.pages
-            currentIndex: grid.currentPage
-            onCurrentIndexChanged: grid.currentPage = currentIndex
+            count: appView.pages
+            currentIndex: appView.currentPage
+            onCurrentIndexChanged: appView.currentPage = currentIndex
             interactive: true
             spacing: FishUI.Units.largeSpacing
             Layout.alignment: Qt.AlignHCenter
@@ -289,8 +299,8 @@ Item {
         function onVisibleChanged(visible) {
             if (visible) {
                 textField.focus = false
-                grid.focus = true
-                grid.forceActiveFocus()
+                appView.focus = true
+                appView.forceActiveFocus()
             } else {
                 textField.text = ""
             }
