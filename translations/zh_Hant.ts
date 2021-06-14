@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/launcher.cpp" line="50"/>
         <source>Launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>啓動器</translation>
     </message>
 </context>
 <context>
@@ -14,12 +14,12 @@
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="91"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>開啓</translation>
     </message>
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="96"/>
         <source>Uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>解除安裝</translation>
     </message>
 </context>
 <context>
@@ -27,12 +27,12 @@
     <message>
         <location filename="../qml/main.qml" line="174"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>搜尋</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="260"/>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>無結果</translation>
     </message>
 </context>
 </TS>
