@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/launcher.cpp" line="50"/>
         <source>Launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>Lanceur</translation>
     </message>
 </context>
 <context>
@@ -14,12 +14,12 @@
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="91"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir</translation>
     </message>
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="96"/>
         <source>Uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>Désinstaller</translation>
     </message>
 </context>
 <context>
@@ -27,12 +27,12 @@
     <message>
         <location filename="../qml/main.qml" line="174"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Chercher</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="260"/>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Introuvable</translation>
     </message>
 </context>
 </TS>
