@@ -4,7 +4,7 @@
 <context>
     <name>Launcher</name>
     <message>
-        <location filename="../src/launcher.cpp" line="47"/>
+        <location filename="../src/launcher.cpp" line="50"/>
         <source>Launcher</source>
         <translation>Launcher</translation>
     </message>
@@ -12,12 +12,12 @@
 <context>
     <name>LauncherGridDelegate</name>
     <message>
-        <location filename="../qml/LauncherGridDelegate.qml" line="46"/>
+        <location filename="../qml/LauncherGridDelegate.qml" line="91"/>
         <source>Open</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="../qml/LauncherGridDelegate.qml" line="51"/>
+        <location filename="../qml/LauncherGridDelegate.qml" line="96"/>
         <source>Uninstall</source>
         <translation type="unfinished"></translation>
     </message>
@@ -25,12 +25,12 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../qml/main.qml" line="81"/>
+        <location filename="../qml/main.qml" line="174"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="114"/>
+        <location filename="../qml/main.qml" line="260"/>
         <source>Not found</source>
         <translation>Not found</translation>
     </message>

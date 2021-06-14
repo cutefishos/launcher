@@ -4,7 +4,7 @@
 <context>
     <name>Launcher</name>
     <message>
-        <location filename="../src/launcher.cpp" line="47"/>
+        <location filename="../src/launcher.cpp" line="50"/>
         <source>Launcher</source>
         <translation>启动器</translation>
     </message>
@@ -12,12 +12,12 @@
 <context>
     <name>LauncherGridDelegate</name>
     <message>
-        <location filename="../qml/LauncherGridDelegate.qml" line="46"/>
+        <location filename="../qml/LauncherGridDelegate.qml" line="91"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../qml/LauncherGridDelegate.qml" line="51"/>
+        <location filename="../qml/LauncherGridDelegate.qml" line="96"/>
         <source>Uninstall</source>
         <translation>卸载</translation>
     </message>
@@ -25,12 +25,12 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../qml/main.qml" line="81"/>
+        <location filename="../qml/main.qml" line="174"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="114"/>
+        <location filename="../qml/main.qml" line="260"/>
         <source>Not found</source>
         <translation>未找到</translation>
     </message>
