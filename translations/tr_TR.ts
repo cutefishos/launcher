@@ -27,7 +27,7 @@
     <message>
         <location filename="../qml/main.qml" line="174"/>
         <source>Search</source>
-        <translation>Arama</translation>
+        <translation>Ara</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="260"/>
