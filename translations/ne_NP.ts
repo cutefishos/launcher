@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/launcher.cpp" line="50"/>
         <source>Launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>लन्चर</translation>
     </message>
 </context>
 <context>
@@ -14,12 +14,12 @@
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="91"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>खोल्ने</translation>
     </message>
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="96"/>
         <source>Uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>हटाउने</translation>
     </message>
 </context>
 <context>
@@ -27,12 +27,12 @@
     <message>
         <location filename="../qml/main.qml" line="174"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>खोजी</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="260"/>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>फेला परेन</translation>
     </message>
 </context>
 </TS>
