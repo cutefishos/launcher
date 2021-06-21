@@ -19,7 +19,7 @@
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="96"/>
         <source>Uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>Uninstall</translation>
     </message>
 </context>
 <context>
