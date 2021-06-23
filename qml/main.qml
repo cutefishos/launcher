@@ -38,21 +38,18 @@ Item {
     property bool showed: launcher.showed
 
     onShowedChanged: {
-        rootOpacityAni.restart()
-        wallpaperColorAni.restart()
-        blurAnimation.restart()
         appViewOpacityAni.restart()
-        appViewScaleAni.restart()
+        blurAnimation.restart()
     }
 
-    NumberAnimation {
-        id: rootOpacityAni
-        from: root.showed ? 1 : 0
-        to: root.showed ? 0 : 1
-        target: root
-        property: "opacity"
-        duration: 200
-    }
+//    NumberAnimation {
+//        id: rootOpacityAni
+//        from: root.showed ? 1 : 0
+//        to: root.showed ? 0 : 1
+//        target: root
+//        property: "opacity"
+//        duration: 200
+//    }
 
     NumberAnimation {
         id: blurAnimation
@@ -63,24 +60,24 @@ Item {
         to: root.showed ? 0 : 72
     }
 
-    NumberAnimation {
-        id: wallpaperColorAni
-        target: wallpaperColor
-        property: "opacity"
-        from: root.showed ? 0.4 : 0.0
-        to: root.showed ? 0.0 : 0.4
-        duration: 250
-    }
+//    NumberAnimation {
+//        id: wallpaperColorAni
+//        target: wallpaperColor
+//        property: "opacity"
+//        from: root.showed ? 0.4 : 0.0
+//        to: root.showed ? 0.0 : 0.4
+//        duration: 250
+//    }
 
-    NumberAnimation {
-        id: appViewScaleAni
-        target: appView
-        property: "scale"
-        easing.type: Easing.OutCubic
-        from: root.showed ? 1.0 : 1.2
-        to: root.showed ? 1.2 : 1.0
-        duration: 180
-    }
+//    NumberAnimation {
+//        id: appViewScaleAni
+//        target: appView
+//        property: "scale"
+//        easing.type: Easing.OutCubic
+//        from: root.showed ? 1.0 : 1.2
+//        to: root.showed ? 1.2 : 1.0
+//        duration: 180
+//    }
 
     NumberAnimation {
         id: appViewOpacityAni
@@ -89,7 +86,7 @@ Item {
         easing.type: Easing.OutCubic
         from: root.showed ? 1.0 : 0.0
         to: root.showed ? 0.0 : 1.0
-        duration: 240
+        duration: 250
     }
 
     Wallpaper {
@@ -111,17 +108,18 @@ Item {
     FastBlur {
         id: wallpaperBlur
         anchors.fill: parent
+        radius: 72
         source: wallpaper
         cached: true
         visible: true
     }
-
 
     ColorOverlay {
         id: wallpaperColor
         anchors.fill: parent
         source: wallpaperBlur
         color: "#000000"
+        opacity: 0.4
         visible: true
     }
 
@@ -141,7 +139,8 @@ Item {
         id: mainLayout
         anchors.fill: parent
         anchors.leftMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.x : 0
-        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + root.maxSpacing * 2 : 0
+        // anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + root.maxSpacing * 2 : 0
+        anchors.topMargin: launcher.screenRect.y + FishUI.Units.largeSpacing * 2
         anchors.rightMargin: launcher.screenRect.width - (launcher.screenAvailableRect.x + launcher.screenAvailableRect.width)
         anchors.bottomMargin: launcher.screenRect.height - (launcher.screenAvailableRect.y + launcher.screenAvailableRect.height - root.verticalSpacing)
 
@@ -163,8 +162,6 @@ Item {
                 anchors.centerIn: parent
                 width: searchItem.width * 0.2
                 height: parent.height
-
-                opacity: root.showed ? 1.0 : 0.0
 
                 leftPadding: FishUI.Units.largeSpacing
                 rightPadding: FishUI.Units.largeSpacing
@@ -273,7 +270,6 @@ Item {
             interactive: true
             spacing: FishUI.Units.largeSpacing
             Layout.alignment: Qt.AlignHCenter
-            opacity: root.showed ? 1.0 : 0.0
 
             delegate: Rectangle {
                 width: 10

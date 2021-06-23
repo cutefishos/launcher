@@ -68,24 +68,18 @@ bool Launcher::showed()
 
 void Launcher::showWindow()
 {
-    if (m_hideTimer->isActive())
-        m_hideTimer->stop();
-
     m_showed = true;
-    setVisible(true);
     emit showedChanged();
+
+    setVisible(true);
 }
 
 void Launcher::hideWindow()
 {
-    if (m_hideTimer->isActive())
-        m_hideTimer->stop();
-
-    // Start to execute qml exit animation
     m_showed = false;
     emit showedChanged();
 
-    m_hideTimer->start();
+    setVisible(false);
 }
 
 void Launcher::toggle()
