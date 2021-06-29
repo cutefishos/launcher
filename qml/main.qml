@@ -139,8 +139,7 @@ Item {
         id: mainLayout
         anchors.fill: parent
         anchors.leftMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.x : 0
-        // anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y + root.maxSpacing * 2 : 0
-        anchors.topMargin: launcher.screenRect.y + FishUI.Units.largeSpacing * 2
+        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y : 0
         anchors.rightMargin: launcher.screenRect.width - (launcher.screenAvailableRect.x + launcher.screenAvailableRect.width)
         anchors.bottomMargin: launcher.screenRect.height - (launcher.screenAvailableRect.y + launcher.screenAvailableRect.height - root.verticalSpacing)
 
@@ -227,8 +226,8 @@ Item {
             LauncherGridView {
                 id: appView
                 anchors.fill: parent
-                anchors.leftMargin: gridItem.width * 0.07
-                anchors.rightMargin: gridItem.width * 0.07
+                anchors.leftMargin: gridItem.width * 0.1
+                anchors.rightMargin: gridItem.width * 0.1
                 Layout.alignment: Qt.AlignHCenter
                 focus: true
 

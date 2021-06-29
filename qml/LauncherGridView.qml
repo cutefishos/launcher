@@ -25,7 +25,7 @@ import Cutefish.Launcher 1.0
 PageView {
     id: control
 
-    property int iconSize: 128 + root.maxSpacing * 2
+    property int iconSize: 128 + FishUI.Units.largeSpacing * 2
 
     property int cellWidth: {
         var extraWidth = calcExtraSpacing(iconSize, control.width)

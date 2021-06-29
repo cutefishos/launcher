@@ -57,16 +57,10 @@ Item {
     IconItem {
         id: icon
 
-        anchors {
-            horizontalCenter: parent.horizontalCenter
-            top: parent.top
-            bottom: label.top
-
-            leftMargin: root.maxSpacing * 2
-            rightMargin: root.maxSpacing * 2
-            topMargin: root.maxSpacing * 2
-            bottomMargin: root.maxSpacing * 2
-        }
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.bottom: label.top
+        anchors.margins: FishUI.Units.largeSpacing * 2
 
         width: height
         height: width
