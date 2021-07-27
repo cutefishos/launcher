@@ -24,6 +24,7 @@ import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.0
 
 import Cutefish.Launcher 1.0
+import Cutefish.System 1.0 as System
 import FishUI 1.0 as FishUI
 
 Item {
@@ -89,14 +90,14 @@ Item {
         duration: 250
     }
 
-    Wallpaper {
+    System.Wallpaper {
         id: backend
     }
 
     Image {
         id: wallpaper
         anchors.fill: parent
-        source: "file://" + backend.wallpaper
+        source: "file://" + backend.path
         sourceSize: Qt.size(launcher.screenRect.width,
                             launcher.screenRect.height)
         fillMode: Image.PreserveAspectCrop
@@ -119,7 +120,7 @@ Item {
         anchors.fill: parent
         source: wallpaperBlur
         color: "#000000"
-        opacity: 0.4
+        opacity: backend.dimsWallpaper ? 0.5 : 0.4
         visible: true
     }
 
