@@ -38,10 +38,10 @@ Item {
     property real maxSpacing: horizontalSpacing > verticalSpacing ? horizontalSpacing : verticalSpacing
     property bool showed: launcher.showed
 
-    onShowedChanged: {
-        appViewOpacityAni.restart()
-        blurAnimation.restart()
-    }
+//    onShowedChanged: {
+//        appViewOpacityAni.restart()
+//        blurAnimation.restart()
+//    }
 
 //    NumberAnimation {
 //        id: rootOpacityAni
@@ -52,14 +52,14 @@ Item {
 //        duration: 200
 //    }
 
-    NumberAnimation {
-        id: blurAnimation
-        target: wallpaperBlur
-        property: "radius"
-        duration: 300
-        from: root.showed ? 72 : 0
-        to: root.showed ? 0 : 72
-    }
+//    NumberAnimation {
+//        id: blurAnimation
+//        target: wallpaperBlur
+//        property: "radius"
+//        duration: 300
+//        from: root.showed ? 72 : 0
+//        to: root.showed ? 0 : 72
+//    }
 
 //    NumberAnimation {
 //        id: wallpaperColorAni
@@ -80,15 +80,15 @@ Item {
 //        duration: 180
 //    }
 
-    NumberAnimation {
-        id: appViewOpacityAni
-        target: appView
-        property: "opacity"
-        easing.type: Easing.OutCubic
-        from: root.showed ? 1.0 : 0.0
-        to: root.showed ? 0.0 : 1.0
-        duration: 250
-    }
+//    NumberAnimation {
+//        id: appViewOpacityAni
+//        target: appView
+//        property: "opacity"
+//        easing.type: Easing.OutCubic
+//        from: root.showed ? 1.0 : 0.0
+//        to: root.showed ? 0.0 : 1.0
+//        duration: 250
+//    }
 
     System.Wallpaper {
         id: backend
@@ -120,7 +120,7 @@ Item {
         anchors.fill: parent
         source: wallpaperBlur
         color: "#000000"
-        opacity: backend.dimsWallpaper ? 0.5 : 0.4
+        opacity: backend.dimsWallpaper ? 0.4 : 0.3
         visible: true
     }
 
