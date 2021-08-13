@@ -120,7 +120,7 @@ Item {
         anchors.fill: parent
         source: wallpaperBlur
         color: "#000000"
-        opacity: backend.dimsWallpaper ? 0.4 : 0.3
+        opacity: backend.dimsWallpaper ? 0.5 : 0.4
         visible: true
     }
 
@@ -140,7 +140,7 @@ Item {
         id: mainLayout
         anchors.fill: parent
         anchors.leftMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.x : 0
-        anchors.topMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.y : 0
+        anchors.topMargin: launcher.screenAvailableRect.y ? launcher.screenAvailableRect.y : 28
         anchors.rightMargin: launcher.screenRect.width - (launcher.screenAvailableRect.x + launcher.screenAvailableRect.width)
         anchors.bottomMargin: launcher.screenRect.height - (launcher.screenAvailableRect.y + launcher.screenAvailableRect.height - root.verticalSpacing)
 
