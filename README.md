@@ -17,7 +17,7 @@ sudo apt install gcc cmake qtbase5-dev qml-module-qtquick-controls2 qml-module-o
 ```
 mkdir build
 cd build
-cmake ..
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
 make
 sudo make install
 ```
