@@ -237,6 +237,12 @@ bool LauncherModel::launch(const QString &path)
         p->setProgram(cmd);
         p->setArguments(args);
 
+        // Because launcher has hidden animation,
+        // cutefish-screenshot needs to be processed.
+        if (cmd == "cutefish-screenshot") {
+            p->setArguments(QStringList() << "-d" << "100");
+        }
+
         Q_EMIT applicationLaunched();
 
         return p->startDetached();
