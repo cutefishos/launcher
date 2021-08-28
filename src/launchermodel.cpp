@@ -257,6 +257,10 @@ void LauncherModel::addApp(const QString &fileName)
         return;
 
     DesktopProperties desktop(fileName, "Desktop Entry");
+
+    if (desktop.contains("Terminal") && desktop.value("Terminal").toBool())
+        return;
+
     if (desktop.contains("OnlyShowIn")) {
         const QString &value = desktop.value("OnlyShowIn").toString();
         if (!value.contains(detectDesktopEnvironment(), Qt::CaseInsensitive)) {
