@@ -87,6 +87,28 @@ void Launcher::toggle()
     isVisible() ? Launcher::hideWindow() : Launcher::showWindow();
 }
 
+bool Launcher::dockAvailable()
+{
+    QDBusInterface iface("org.cutefish.Dock",
+                         "/Dock",
+                         "org.cutefish.Dock",
+                         QDBusConnection::sessionBus());
+    return iface.isValid();
+}
+
+bool Launcher::isPinedDock(const QString &desktop)
+{
+    QDBusInterface iface("org.cutefish.Dock",
+                         "/Dock",
+                         "org.cutefish.Dock",
+                         QDBusConnection::sessionBus());
+
+    if (!iface.isValid())
+        return false;
+
+    return iface.call("contains", desktop).arguments().first().toBool();
+}
+
 QRect Launcher::screenRect()
 {
     return m_screenRect;

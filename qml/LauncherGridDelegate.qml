@@ -87,8 +87,25 @@ Item {
         }
 
         MenuItem {
+            id: sendToDock
+            text: qsTr("Send to dock")
+            onTriggered: launcherModel.sendToDock(model.appId)
+        }
+
+        MenuItem {
+            id: removeFromDock
+            text: qsTr("Remove from dock")
+            onTriggered: launcherModel.removeFromDock(model.appId)
+        }
+
+        MenuItem {
             text: qsTr("Uninstall")
             onTriggered: {}
+        }
+
+        function updateActions() {
+            sendToDock.visible = launcher.dockAvailable() && !launcher.isPinedDock(model.appId)
+            removeFromDock.visible = launcher.dockAvailable() && launcher.isPinedDock(model.appId)
         }
     }
 
@@ -101,8 +118,10 @@ Item {
         onClicked: {
             if (mouse.button == Qt.LeftButton)
                 launcherModel.launch(model.appId)
-            else if (mouse.button == Qt.RightButton)
+            else if (mouse.button == Qt.RightButton) {
+                _itemMenu.updateActions()
                 _itemMenu.popup()
+            }
         }
 
         onPositionChanged: {

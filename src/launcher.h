@@ -40,6 +40,9 @@ public:
     Q_INVOKABLE void hideWindow();
     Q_INVOKABLE void toggle();
 
+    Q_INVOKABLE bool dockAvailable();
+    Q_INVOKABLE bool isPinedDock(const QString &desktop);
+
     QRect screenRect();
     QRect screenAvailableRect();
 

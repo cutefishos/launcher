@@ -21,6 +21,7 @@
 #include "desktopproperties.h"
 #include "launcheritem.h"
 
+#include <QDBusInterface>
 #include <QtConcurrent/QtConcurrentRun>
 #include <QRegularExpression>
 #include <QFileSystemWatcher>
@@ -139,6 +140,34 @@ void LauncherModel::search(const QString &key)
     }
 
     emit layoutChanged();
+}
+
+void LauncherModel::sendToDock(const QString &key)
+{
+    LauncherItem *app = findApplication(key);
+
+    if (app) {
+        QDBusInterface iface("org.cutefish.Dock",
+                             "/Dock",
+                             "org.cutefish.Dock",
+                             QDBusConnection::sessionBus());
+        if (iface.isValid())
+            iface.asyncCall("add", key);
+    }
+}
+
+void LauncherModel::removeFromDock(const QString &desktop)
+{
+    LauncherItem *app = findApplication(desktop);
+
+    if (app) {
+        QDBusInterface iface("org.cutefish.Dock",
+                             "/Dock",
+                             "org.cutefish.Dock",
+                             QDBusConnection::sessionBus());
+        if (iface.isValid())
+            iface.asyncCall("remove", desktop);
+    }
 }
 
 LauncherItem *LauncherModel::findApplication(const QString &appId)
