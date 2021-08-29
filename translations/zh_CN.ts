@@ -12,12 +12,22 @@
 <context>
     <name>LauncherGridDelegate</name>
     <message>
-        <location filename="../qml/LauncherGridDelegate.qml" line="91"/>
+        <location filename="../qml/LauncherGridDelegate.qml" line="85"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
-        <location filename="../qml/LauncherGridDelegate.qml" line="96"/>
+        <location filename="../qml/LauncherGridDelegate.qml" line="91"/>
+        <source>Send to dock</source>
+        <translation>发送到程序坞</translation>
+    </message>
+    <message>
+        <location filename="../qml/LauncherGridDelegate.qml" line="97"/>
+        <source>Remove from dock</source>
+        <translation>在程序坞中移除</translation>
+    </message>
+    <message>
+        <location filename="../qml/LauncherGridDelegate.qml" line="102"/>
         <source>Uninstall</source>
         <translation>卸载</translation>
     </message>
@@ -25,12 +35,12 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../qml/main.qml" line="174"/>
+        <location filename="../qml/main.qml" line="171"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="260"/>
+        <location filename="../qml/main.qml" line="257"/>
         <source>Not found</source>
         <translation>未找到</translation>
     </message>

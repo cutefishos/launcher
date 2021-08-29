@@ -12,12 +12,22 @@
 <context>
     <name>LauncherGridDelegate</name>
     <message>
-        <location filename="../qml/LauncherGridDelegate.qml" line="91"/>
+        <location filename="../qml/LauncherGridDelegate.qml" line="85"/>
         <source>Open</source>
         <translation>Open</translation>
     </message>
     <message>
-        <location filename="../qml/LauncherGridDelegate.qml" line="96"/>
+        <location filename="../qml/LauncherGridDelegate.qml" line="91"/>
+        <source>Send to dock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/LauncherGridDelegate.qml" line="97"/>
+        <source>Remove from dock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/LauncherGridDelegate.qml" line="102"/>
         <source>Uninstall</source>
         <translation>Uninstall</translation>
     </message>
@@ -25,12 +35,12 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../qml/main.qml" line="174"/>
+        <location filename="../qml/main.qml" line="171"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="260"/>
+        <location filename="../qml/main.qml" line="257"/>
         <source>Not found</source>
         <translation>Not found</translation>
     </message>
