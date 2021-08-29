@@ -106,7 +106,7 @@ bool Launcher::isPinedDock(const QString &desktop)
     if (!iface.isValid())
         return false;
 
-    return iface.call("contains", desktop).arguments().first().toBool();
+    return iface.call("pinned", desktop).arguments().first().toBool();
 }
 
 QRect Launcher::screenRect()
