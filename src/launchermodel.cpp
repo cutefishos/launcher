@@ -310,6 +310,7 @@ void LauncherModel::addApp(const QString &fileName)
     appExec.remove(QRegularExpression("%."));
     appExec.remove(QRegularExpression("^\""));
     // appExec.remove(QRegularExpression(" *$"));
+    appExec = appExec.replace("\"", "");
     appExec = appExec.simplified();
 
     LauncherItem *item = new LauncherItem;
