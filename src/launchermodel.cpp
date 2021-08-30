@@ -147,12 +147,12 @@ void LauncherModel::sendToDock(const QString &key)
     LauncherItem *app = findApplication(key);
 
     if (app) {
-        QDBusInterface iface("org.cutefish.Dock",
-                             "/Dock",
-                             "org.cutefish.Dock",
-                             QDBusConnection::sessionBus());
-        if (iface.isValid())
-            iface.asyncCall("add", key);
+        QDBusMessage message = QDBusMessage::createMethodCall("org.cutefish.Dock",
+                                                              "/Dock",
+                                                              "org.cutefish.Dock",
+                                                               "add");
+        message.setArguments(QList<QVariant>() << key);
+        QDBusConnection::sessionBus().asyncCall(message);
     }
 }
 
@@ -161,12 +161,12 @@ void LauncherModel::removeFromDock(const QString &desktop)
     LauncherItem *app = findApplication(desktop);
 
     if (app) {
-        QDBusInterface iface("org.cutefish.Dock",
-                             "/Dock",
-                             "org.cutefish.Dock",
-                             QDBusConnection::sessionBus());
-        if (iface.isValid())
-            iface.asyncCall("remove", desktop);
+        QDBusMessage message = QDBusMessage::createMethodCall("org.cutefish.Dock",
+                                                              "/Dock",
+                                                              "org.cutefish.Dock",
+                                                               "remove");
+        message.setArguments(QList<QVariant>() << desktop);
+        QDBusConnection::sessionBus().asyncCall(message);
     }
 }
 
