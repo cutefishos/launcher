@@ -22,6 +22,8 @@
 #include "launcheritem.h"
 
 #include <QDBusInterface>
+#include <QDBusPendingCallWatcher>
+
 #include <QtConcurrent/QtConcurrentRun>
 #include <QRegularExpression>
 #include <QFileSystemWatcher>
