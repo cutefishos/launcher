@@ -21,7 +21,9 @@
 #include "launcheradaptor.h"
 #include "iconthemeimageprovider.h"
 
+#include <QApplication>
 #include <QDBusConnection>
+#include <QDBusServiceWatcher>
 #include <QQmlContext>
 #include <QScreen>
 #include <QTimer>
@@ -29,12 +31,16 @@
 #include <KWindowSystem>
 
 Launcher::Launcher(QQuickView *w)
-  : QQuickView(w)
-  , m_hideTimer(new QTimer)
-  , m_showed(false)
+    : QQuickView(w)
+    , m_dockInterface("org.cutefish.Dock",
+                    "/Dock",
+                    "org.cutefish.Dock", QDBusConnection::sessionBus())
+    , m_hideTimer(new QTimer)
+    , m_showed(false)
+    , m_leftMargin(0)
+    , m_rightMargin(0)
+    , m_bottomMargin(0)
 {
-    m_screenAvailableRect = qApp->primaryScreen()->availableGeometry();
-
     new LauncherAdaptor(this);
 
     engine()->rootContext()->setContextProperty("launcher", this);
@@ -55,10 +61,42 @@ Launcher::Launcher(QQuickView *w)
     m_hideTimer->setSingleShot(true);
     connect(m_hideTimer, &QTimer::timeout, this, [=] { setVisible(false); });
 
+    if (m_dockInterface.isValid()) {
+        updateMargins();
+        connect(&m_dockInterface, SIGNAL(primaryGeometryChanged()), this, SLOT(updateMargins()));
+        connect(&m_dockInterface, SIGNAL(directionChanged()), this, SLOT(updateMargins()));
+    } else {
+        QDBusServiceWatcher *watcher = new QDBusServiceWatcher("org.cutefish.Dock",
+                                                               QDBusConnection::sessionBus(),
+                                                               QDBusServiceWatcher::WatchForUnregistration,
+                                                               this);
+        connect(watcher, &QDBusServiceWatcher::serviceUnregistered, this, [=] {
+            updateMargins();
+            connect(&m_dockInterface, SIGNAL(primaryGeometryChanged()), this, SLOT(updateMargins()));
+            connect(&m_dockInterface, SIGNAL(directionChanged()), this, SLOT(updateMargins()));
+        });
+    }
+
+    connect(qApp, &QApplication::primaryScreenChanged, this, [=] { onGeometryChanged(); });
+
     connect(qApp->primaryScreen(), &QScreen::virtualGeometryChanged, this, &Launcher::onGeometryChanged);
     connect(qApp->primaryScreen(), &QScreen::geometryChanged, this, &Launcher::onGeometryChanged);
-    connect(qApp->primaryScreen(), &QScreen::availableGeometryChanged, this, &Launcher::onAvailableGeometryChanged);
     connect(this, &QQuickView::activeChanged, this, &Launcher::onActiveChanged);
+}
+
+int Launcher::leftMargin() const
+{
+    return m_leftMargin;
+}
+
+int Launcher::rightMargin() const
+{
+    return m_rightMargin;
+}
+
+int Launcher::bottomMargin() const
+{
+    return m_bottomMargin;
 }
 
 bool Launcher::showed()
@@ -89,11 +127,7 @@ void Launcher::toggle()
 
 bool Launcher::dockAvailable()
 {
-    QDBusInterface iface("org.cutefish.Dock",
-                         "/Dock",
-                         "org.cutefish.Dock",
-                         QDBusConnection::sessionBus());
-    return iface.isValid();
+    return m_dockInterface.isValid();
 }
 
 bool Launcher::isPinedDock(const QString &desktop)
@@ -114,9 +148,24 @@ QRect Launcher::screenRect()
     return m_screenRect;
 }
 
-QRect Launcher::screenAvailableRect()
+void Launcher::updateMargins()
 {
-    return m_screenAvailableRect;
+    QRect dockGeometry = m_dockInterface.property("primaryGeometry").toRect();
+    int dockDirection = m_dockInterface.property("direction").toInt();
+
+    m_leftMargin = 0;
+    m_rightMargin = 0;
+    m_bottomMargin = 0;
+
+    if (dockDirection == 0) {
+        m_leftMargin = dockGeometry.width();
+    } else if (dockDirection == 1) {
+        m_bottomMargin = dockGeometry.height();
+    } else if (dockDirection == 2) {
+        m_rightMargin = dockGeometry.width();
+    }
+
+    emit marginsChanged();
 }
 
 void Launcher::onGeometryChanged()
@@ -126,12 +175,6 @@ void Launcher::onGeometryChanged()
         setGeometry(m_screenRect);
         emit screenRectChanged();
     }
-}
-
-void Launcher::onAvailableGeometryChanged(const QRect &geometry)
-{
-    m_screenAvailableRect = geometry;
-    emit screenAvailableGeometryChanged();
 }
 
 void Launcher::showEvent(QShowEvent *e)

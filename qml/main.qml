@@ -139,12 +139,10 @@ Item {
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
-        anchors.leftMargin: launcher.screenAvailableRect ? launcher.screenAvailableRect.x : 0
-        anchors.topMargin: launcher.screenAvailableRect.y ? launcher.screenAvailableRect.y : 28
-        anchors.rightMargin: launcher.screenRect.width - (launcher.screenAvailableRect.x + launcher.screenAvailableRect.width)
-        anchors.bottomMargin: launcher.screenRect.height - (launcher.screenAvailableRect.y + launcher.screenAvailableRect.height - root.verticalSpacing)
-
-        // spacing: root.verticalSpacing
+        anchors.topMargin: 28
+        anchors.leftMargin: launcher.leftMargin
+        anchors.rightMargin: launcher.rightMargin
+        anchors.bottomMargin: launcher.bottomMargin + 28
         spacing: 0
 
         Item {

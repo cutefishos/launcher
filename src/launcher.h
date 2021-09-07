@@ -24,15 +24,23 @@
 #include <QQuickView>
 #include <QTimer>
 
+#include <QDBusInterface>
+
 class Launcher : public QQuickView
 {
     Q_OBJECT
     Q_PROPERTY(QRect screenRect READ screenRect NOTIFY screenRectChanged)
-    Q_PROPERTY(QRect screenAvailableRect READ screenAvailableRect NOTIFY screenAvailableGeometryChanged)
     Q_PROPERTY(bool showed READ showed NOTIFY showedChanged)
+    Q_PROPERTY(int leftMargin READ leftMargin NOTIFY marginsChanged)
+    Q_PROPERTY(int rightMargin READ rightMargin NOTIFY marginsChanged)
+    Q_PROPERTY(int bottomMargin READ bottomMargin NOTIFY marginsChanged)
 
 public:
     Launcher(QQuickView *w = nullptr);
+
+    int leftMargin() const;
+    int rightMargin() const;
+    int bottomMargin() const;
 
     bool showed();
 
@@ -44,16 +52,15 @@ public:
     Q_INVOKABLE bool isPinedDock(const QString &desktop);
 
     QRect screenRect();
-    QRect screenAvailableRect();
 
 signals:
     void screenRectChanged();
-    void screenAvailableGeometryChanged();
     void showedChanged();
+    void marginsChanged();
 
 private slots:
+    void updateMargins();
     void onGeometryChanged();
-    void onAvailableGeometryChanged(const QRect &geometry);
 
 protected:
     void showEvent(QShowEvent *e) override;
@@ -63,10 +70,14 @@ private:
     void onActiveChanged();
 
 private:
+    QDBusInterface m_dockInterface;
     QRect m_screenRect;
-    QRect m_screenAvailableRect;
     QTimer *m_hideTimer;
     bool m_showed;
+
+    int m_leftMargin;
+    int m_rightMargin;
+    int m_bottomMargin;
 };
 
 #endif // LAUNCHER_H
