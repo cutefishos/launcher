@@ -20,6 +20,7 @@
 #include <QApplication>
 #include <QDBusConnection>
 #include <QDBusInterface>
+#include <QPixmapCache>
 
 #include "launcher.h"
 #include "launcheritem.h"
@@ -53,6 +54,8 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     app.setApplicationName(QStringLiteral("cutefish-launcher"));
+
+    QPixmapCache::setCacheLimit(1024 * 10);
 
     // QCommandLineParser parser;
     // QCommandLineOption showOption(QStringLiteral("show"), "Show Launcher");

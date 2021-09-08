@@ -61,7 +61,7 @@ Launcher::Launcher(QQuickView *w)
     m_hideTimer->setSingleShot(true);
     connect(m_hideTimer, &QTimer::timeout, this, [=] { setVisible(false); });
 
-    if (m_dockInterface.isValid()) {
+    if (m_dockInterface.isValid() && !m_dockInterface.lastError().isValid()) {
         updateMargins();
         connect(&m_dockInterface, SIGNAL(primaryGeometryChanged()), this, SLOT(updateMargins()));
         connect(&m_dockInterface, SIGNAL(directionChanged()), this, SLOT(updateMargins()));
