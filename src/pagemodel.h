@@ -39,6 +39,8 @@ public:
     int startIndex() const;
     int limitCount() const;
 
+    Q_INVOKABLE void move(int from, int to);
+
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 public Q_SLOTS:

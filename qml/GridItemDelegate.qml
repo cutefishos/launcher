@@ -27,8 +27,12 @@ import Cutefish.Launcher 1.0
 Item {
     id: control
 
+    property bool searchMode: false
     property bool dragStarted: false
     property var dragItemIndex: index
+
+    property int pageIndex: 0
+    property int pageCount: 0
 
     Drag.active: iconMouseArea.drag.active
     Drag.dragType: Drag.Automatic
@@ -49,8 +53,16 @@ Item {
         enabled: true
 
         onContainsDragChanged: {
-            if (drag.source)
-                launcherModel.move(drag.source.dragItemIndex, control.dragItemIndex)
+            if (control.searchMode)
+                return
+
+            if (drag.source) {
+                launcherModel.move(drag.source.dragItemIndex,
+                                   control.dragItemIndex,
+                                   control.pageIndex,
+                                   control.pageCount)
+                _pageModel.move(drag.source.dragItemIndex, control.dragItemIndex)
+            }
         }
     }
 
@@ -98,10 +110,10 @@ Item {
             onTriggered: launcherModel.removeFromDock(model.appId)
         }
 
-        MenuItem {
-            text: qsTr("Uninstall")
-            onTriggered: {}
-        }
+        // MenuItem {
+        //     text: qsTr("Uninstall")
+        //     onTriggered: {}
+        // }
 
         function updateActions() {
             sendToDock.visible = launcher.dockAvailable() && !launcher.isPinedDock(model.appId)

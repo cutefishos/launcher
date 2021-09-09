@@ -37,6 +37,19 @@ int PageModel::startIndex() const { return m_startIndex; }
 
 int PageModel::limitCount() const { return m_limitCount; }
 
+void PageModel::move(int from, int to)
+{
+    if (from == to)
+        return;
+
+    if (from < to)
+        beginMoveRows(QModelIndex(), from, from, QModelIndex(), to + 1);
+    else
+        beginMoveRows(QModelIndex(), from, from, QModelIndex(), to);
+
+    endMoveRows();
+}
+
 void PageModel::setStartIndex(int startIndex)
 {
     if (startIndex != m_startIndex) {

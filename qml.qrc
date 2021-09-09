@@ -1,8 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>qml/main.qml</file>
-        <file>qml/LauncherGridDelegate.qml</file>
-        <file>qml/PageView.qml</file>
-        <file>qml/LauncherGridView.qml</file>
+        <file>qml/GridItemDelegate.qml</file>
+        <file>qml/AllAppsView.qml</file>
     </qresource>
 </RCC>

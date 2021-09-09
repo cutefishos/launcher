@@ -41,7 +41,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QByteArray uri = "Cutefish.Launcher";
-    qmlRegisterUncreatableType<LauncherItem>(uri, 1, 0, "LauncherItem", "cannot init application");
+    // qmlRegisterUncreatableType<LauncherItem>(uri, 1, 0, "LauncherItem", "cannot init application");
+    qmlRegisterType<LauncherItem>(uri, 1, 0, "LauncherItem");
     qmlRegisterType<LauncherModel>(uri, 1, 0, "LauncherModel");
     qmlRegisterType<PageModel>(uri, 1, 0, "PageModel");
     qmlRegisterType<IconItem>(uri, 1, 0, "IconItem");
@@ -55,7 +56,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     app.setApplicationName(QStringLiteral("cutefish-launcher"));
 
-    QPixmapCache::setCacheLimit(1024 * 10);
+    // QPixmapCache::setCacheLimit(1024 * 10);
 
     // QCommandLineParser parser;
     // QCommandLineOption showOption(QStringLiteral("show"), "Show Launcher");

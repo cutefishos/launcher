@@ -25,9 +25,12 @@
 class LauncherItem : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString fuke READ fuke CONSTANT)
 
 public:
     explicit LauncherItem(QObject *parent = nullptr);
+
+    Q_INVOKABLE QString fuke() { return "asd"; };
 
     QString id;
     QString name;

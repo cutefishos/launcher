@@ -60,6 +60,14 @@ LauncherModel::LauncherModel(QObject *parent)
     connect(this, &QAbstractItemModel::rowsRemoved, this, &LauncherModel::countChanged);
     connect(this, &QAbstractItemModel::modelReset, this, &LauncherModel::countChanged);
     connect(this, &QAbstractItemModel::layoutChanged, this, &LauncherModel::countChanged);
+
+    connect(this, &LauncherModel::refreshed, this, [=] {
+        beginResetModel();
+        std::sort(m_items.begin(), m_items.end(), [=] (LauncherItem *a, LauncherItem *b) {
+            return a->name < b->name;
+        });
+        endResetModel();
+    });
 }
 
 LauncherModel::~LauncherModel()
@@ -240,19 +248,22 @@ int LauncherModel::indexFromAppId(const QString &appId) const
     return -1;
 }
 
-void LauncherModel::move(int from, int to)
+void LauncherModel::move(int from, int to, int page, int pageCount)
 {
     if (from == to)
         return;
 
-    m_items.move(from, to);
+    int newFrom = from + (page * pageCount);
+    int newTo = to + (page * pageCount);
 
-    if (from < to)
-        beginMoveRows(QModelIndex(), from, from, QModelIndex(), to + 1);
-    else
-        beginMoveRows(QModelIndex(), from, from, QModelIndex(), to);
+    m_items.move(newFrom, newTo);
 
-    endMoveRows();
+//    if (from < to)
+//        beginMoveRows(QModelIndex(), from, from, QModelIndex(), to + 1);
+//    else
+//        beginMoveRows(QModelIndex(), from, from, QModelIndex(), to);
+
+//    endMoveRows();
 }
 
 bool LauncherModel::launch(const QString &path)

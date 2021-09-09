@@ -38,6 +38,21 @@ Item {
     property real maxSpacing: horizontalSpacing > verticalSpacing ? horizontalSpacing : verticalSpacing
     property bool showed: launcher.showed
 
+    onShowedChanged: {
+        if (showed)
+            searchFieldAni.start()
+    }
+
+    NumberAnimation {
+        id: searchFieldAni
+        from: 0.0
+        to: 1.0
+        target: textField
+        property: "opacity"
+        easing.type: Easing.InQuad
+        duration: 250
+    }
+
 //    onShowedChanged: {
 //        appViewOpacityAni.restart()
 //        blurAnimation.restart()
@@ -103,7 +118,7 @@ Item {
         fillMode: Image.PreserveAspectCrop
         asynchronous: false
         cache: false
-        smooth: false
+        smooth: true
     }
 
     FastBlur {
@@ -215,6 +230,10 @@ Item {
         }
 
         Item {
+            height: 14
+        }
+
+        Item {
             id: gridItem
             Layout.fillHeight: true
             Layout.fillWidth: true
@@ -222,12 +241,13 @@ Item {
             Keys.enabled: true
             Keys.forwardTo: appView
 
-            LauncherGridView {
+            AllAppsView {
                 id: appView
                 anchors.fill: parent
                 anchors.leftMargin: gridItem.width * 0.1
                 anchors.rightMargin: gridItem.width * 0.1
                 Layout.alignment: Qt.AlignHCenter
+                searchMode: textField.text
                 focus: true
 
                 Keys.enabled: true
@@ -262,9 +282,9 @@ Item {
 
         PageIndicator {
             id: pageIndicator
-            count: appView.pages
-            currentIndex: appView.currentPage
-            onCurrentIndexChanged: appView.currentPage = currentIndex
+            count: appView.count
+            currentIndex: appView.currentIndex
+            onCurrentIndexChanged: appView.currentIndex = currentIndex
             interactive: true
             spacing: FishUI.Units.largeSpacing
             Layout.alignment: Qt.AlignHCenter

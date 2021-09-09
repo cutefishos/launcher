@@ -73,7 +73,7 @@ public:
     Q_INVOKABLE QString getIconName(const QString &appId);
     Q_INVOKABLE int indexFromAppId(const QString &appId) const;
 
-    Q_INVOKABLE void move(int from, int to);
+    Q_INVOKABLE void move(int from, int to, int page, int pageCount);
 
 public Q_SLOTS:
     Q_INVOKABLE bool launch(const QString &path);
