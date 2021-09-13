@@ -45,7 +45,7 @@ ListView {
     model: Math.ceil(control.modelCount / control.pageCount)
 
     maximumFlickVelocity: 10000
-    highlightMoveDuration: 100
+    highlightMoveDuration: 300
 
     preferredHighlightBegin: 0
     preferredHighlightEnd: 0
@@ -71,6 +71,11 @@ ListView {
             else
                 control.currentIndex = index
         }
+    }
+
+    DropArea {
+        anchors.fill: parent
+        z: -1
     }
 
     MouseArea {

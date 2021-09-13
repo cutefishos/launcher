@@ -21,6 +21,8 @@
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QPixmapCache>
+#include <QCommandLineOption>
+#include <QCommandLineParser>
 
 #include "launcher.h"
 #include "launcheritem.h"
@@ -41,7 +43,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QByteArray uri = "Cutefish.Launcher";
-    // qmlRegisterUncreatableType<LauncherItem>(uri, 1, 0, "LauncherItem", "cannot init application");
+    qRegisterMetaType<LauncherItem>("LauncherItem");
     qmlRegisterType<LauncherItem>(uri, 1, 0, "LauncherItem");
     qmlRegisterType<LauncherModel>(uri, 1, 0, "LauncherModel");
     qmlRegisterType<PageModel>(uri, 1, 0, "PageModel");
@@ -58,14 +60,14 @@ int main(int argc, char *argv[])
 
     // QPixmapCache::setCacheLimit(1024 * 10);
 
-    // QCommandLineParser parser;
-    // QCommandLineOption showOption(QStringLiteral("show"), "Show Launcher");
-    // parser.addOption(showOption);
+    QCommandLineParser parser;
+    QCommandLineOption showOption(QStringLiteral("show"), "Show Launcher");
+    parser.addOption(showOption);
     // QCommandLineOption hideOption(QStringLiteral("hide"), "Hide Launcher");
     // parser.addOption(hideOption);
     // QCommandLineOption toggleOption(QStringLiteral("toggle"), "Toggle Launcher");
     // parser.addOption(toggleOption);
-    // parser.process(app.arguments());
+    parser.process(app.arguments());
 
     QDBusConnection dbus = QDBusConnection::sessionBus();
     if (!dbus.registerService(DBUS_NAME)) {
@@ -85,7 +87,8 @@ int main(int argc, char *argv[])
         }
     }
 
-    Launcher launcher;
+    bool firstShow = parser.isSet(showOption);
+    Launcher launcher(firstShow);
 
     if (!dbus.registerObject(DBUS_PATH, DBUS_INTERFACE, &launcher))
         return -1;

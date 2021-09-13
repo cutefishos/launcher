@@ -19,7 +19,6 @@
 
 #include "launchermodel.h"
 #include "desktopproperties.h"
-#include "launcheritem.h"
 
 #include <QDBusInterface>
 #include <QDBusPendingCallWatcher>
@@ -45,8 +44,9 @@ static QByteArray detectDesktopEnvironment()
 }
 
 LauncherModel::LauncherModel(QObject *parent)
-    : QAbstractListModel(parent),
-      m_mode(NormalMode)
+    : QAbstractListModel(parent)
+    , m_settings("cutefishos", "launcher-applist", this)
+    , m_mode(NormalMode)
 {
     QtConcurrent::run(LauncherModel::refresh, this);
 
@@ -113,11 +113,7 @@ QVariant LauncherModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     LauncherItem *item = m_mode == NormalMode
-                       ? m_items.at(index.row())
-                       : m_searchItems.at(index.row());
-
-    if (!item)
-        return QVariant();
+            ? m_items.at(index.row()) : m_searchItems.at(index.row());
 
     switch (role) {
     case AppIdRole:
@@ -127,7 +123,10 @@ QVariant LauncherModel::data(const QModelIndex &index, int role) const
     case IconNameRole:
         return item->iconName;
     case FilterInfoRole:
-        return QString(item->name + QStringLiteral(" ") + item->genericName + QStringLiteral(" ") + item->comment);
+        return QString(item->name + QStringLiteral(" ")
+                       + item->genericName
+                       + QStringLiteral(" ")
+                       + item->comment);
     default:
         return QVariant();
     }
@@ -154,9 +153,9 @@ void LauncherModel::search(const QString &key)
 
 void LauncherModel::sendToDock(const QString &key)
 {
-    LauncherItem *app = findApplication(key);
+    int index = findById(key);
 
-    if (app) {
+    if (index != -1) {
         QDBusMessage message = QDBusMessage::createMethodCall("org.cutefish.Dock",
                                                               "/Dock",
                                                               "org.cutefish.Dock",
@@ -168,9 +167,9 @@ void LauncherModel::sendToDock(const QString &key)
 
 void LauncherModel::removeFromDock(const QString &desktop)
 {
-    LauncherItem *app = findApplication(desktop);
+    int index = findById(desktop);
 
-    if (app) {
+    if (index != -1) {
         QDBusMessage message = QDBusMessage::createMethodCall("org.cutefish.Dock",
                                                               "/Dock",
                                                               "org.cutefish.Dock",
@@ -180,14 +179,14 @@ void LauncherModel::removeFromDock(const QString &desktop)
     }
 }
 
-LauncherItem *LauncherModel::findApplication(const QString &appId)
+int LauncherModel::findById(const QString &id)
 {
-    for (LauncherItem *item : qAsConst(m_items)) {
-        if (item->id == appId)
-            return item;
+    for (int i = 0; i < m_items.size(); ++i) {
+        if (m_items.at(i)->id == id)
+            return i;
     }
 
-    return nullptr;
+    return -1;
 }
 
 void LauncherModel::refresh(LauncherModel *manager)
@@ -214,38 +213,11 @@ void LauncherModel::refresh(LauncherModel *manager)
 
     for (LauncherItem *item : qAsConst(manager->m_items)) {
         if (!allEntries.contains(item->id))
-            QMetaObject::invokeMethod(manager, "removeApp", Q_ARG(QObject*, qobject_cast<QObject*>(item)));
+            QMetaObject::invokeMethod(manager, "removeApp", Q_ARG(LauncherItem *, item));
     }
 
     // Signal the model was refreshed
     QMetaObject::invokeMethod(manager, "refreshed");
-}
-
-LauncherItem *LauncherModel::get(int index) const
-{
-    if (index < 0 || index >= m_items.size())
-        return nullptr;
-
-    return m_items.at(index);
-}
-
-QString LauncherModel::getIconName(const QString &appId)
-{
-    LauncherItem *item = get(indexFromAppId(appId));
-    if (item)
-        return item->iconName;
-
-    return QString();
-}
-
-int LauncherModel::indexFromAppId(const QString &appId) const
-{
-    for (int i = 0; i < m_items.size(); i++) {
-        if (m_items.at(i)->id == appId)
-            return i;
-    }
-
-    return -1;
 }
 
 void LauncherModel::move(int from, int to, int page, int pageCount)
@@ -263,14 +235,24 @@ void LauncherModel::move(int from, int to, int page, int pageCount)
 //    else
 //        beginMoveRows(QModelIndex(), from, from, QModelIndex(), to);
 
-//    endMoveRows();
+    //    endMoveRows();
+}
+
+void LauncherModel::save()
+{
+    QByteArray datas;
+    QDataStream out(&datas, QIODevice::WriteOnly);
+    out << m_items;
+    m_settings.setValue("list", datas);
 }
 
 bool LauncherModel::launch(const QString &path)
 {
-    LauncherItem *app = findApplication(path);
-    if (app) {
-        QStringList args = app->args;
+    int index = findById(path);
+
+    if (index != -1) {
+        LauncherItem *item = m_items.at(index);
+        QStringList args = item->args;
         QScopedPointer<QProcess> p(new QProcess);
         p->setStandardInputFile(QProcess::nullDevice());
         p->setProcessChannelMode(QProcess::ForwardedChannels);
@@ -295,7 +277,7 @@ bool LauncherModel::launch(const QString &path)
 
 void LauncherModel::addApp(const QString &fileName)
 {
-    if (findApplication(fileName))
+    if (findById(fileName) != -1)
         return;
 
     DesktopProperties desktop(fileName, "Desktop Entry");
@@ -337,16 +319,12 @@ void LauncherModel::addApp(const QString &fileName)
     beginInsertRows(QModelIndex(), m_items.count(), m_items.count());
     m_items.append(item);
     qDebug() << "added: " << item->name;
-    Q_EMIT applicationAdded(item);
+    // Q_EMIT applicationAdded(item);
     endInsertRows();
 }
 
-void LauncherModel::removeApp(QObject *object)
+void LauncherModel::removeApp(LauncherItem *item)
 {
-    LauncherItem *item = qobject_cast<LauncherItem *>(object);
-    if (!item)
-        return;
-
     int index = m_items.indexOf(item);
     if (index < 0)
         return;

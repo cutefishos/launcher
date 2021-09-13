@@ -36,7 +36,7 @@ class Launcher : public QQuickView
     Q_PROPERTY(int bottomMargin READ bottomMargin NOTIFY marginsChanged)
 
 public:
-    Launcher(QQuickView *w = nullptr);
+    Launcher(bool firstShow = false, QQuickView *w = nullptr);
 
     int leftMargin() const;
     int rightMargin() const;

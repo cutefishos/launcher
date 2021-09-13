@@ -307,6 +307,12 @@ Item {
         }
     }
 
+    Timer {
+        id: clearSearchTimer
+        interval: 100
+        onTriggered: textField.text = ""
+    }
+
     Connections {
         target: launcher
 
@@ -316,7 +322,7 @@ Item {
                 appView.focus = true
                 appView.forceActiveFocus()
             } else {
-                textField.text = ""
+                clearSearchTimer.restart()
             }
         }
     }

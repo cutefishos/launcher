@@ -30,7 +30,7 @@
 
 #include <KWindowSystem>
 
-Launcher::Launcher(QQuickView *w)
+Launcher::Launcher(bool firstShow, QQuickView *w)
     : QQuickView(w)
     , m_dockInterface("org.cutefish.Dock",
                     "/Dock",
@@ -54,7 +54,7 @@ Launcher::Launcher(QQuickView *w)
 
     setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     setTitle(tr("Launcher"));
-    setVisible(false);
+    setVisible(firstShow);
 
     // Let the animation in qml be hidden after the execution is complete
     m_hideTimer->setInterval(200);
@@ -114,10 +114,9 @@ void Launcher::showWindow()
 
 void Launcher::hideWindow()
 {
+    setVisible(false);
     m_showed = false;
     emit showedChanged();
-
-    setVisible(false);
 }
 
 void Launcher::toggle()

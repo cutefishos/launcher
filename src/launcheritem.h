@@ -21,17 +21,22 @@
 #define LAUNCHERITEM_H
 
 #include <QObject>
+#include <QDataStream>
 
 class LauncherItem : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString fuke READ fuke CONSTANT)
 
 public:
-    explicit LauncherItem(QObject *parent = nullptr);
+    LauncherItem();
+    LauncherItem(const LauncherItem &item);
+    ~LauncherItem();
 
-    Q_INVOKABLE QString fuke() { return "asd"; };
+    inline bool operator==(const LauncherItem &other) const { return id == other.id; }
+    friend QDataStream &operator<<(QDataStream &argument, const LauncherItem &item);
+    friend const QDataStream &operator>>(QDataStream &argument, LauncherItem &item);
 
+public:
     QString id;
     QString name;
     QString genericName;
@@ -39,5 +44,7 @@ public:
     QString iconName;
     QStringList args;
 };
+
+Q_DECLARE_METATYPE(LauncherItem)
 
 #endif // LAUNCHERITEM_H

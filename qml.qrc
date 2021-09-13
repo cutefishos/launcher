@@ -3,5 +3,6 @@
         <file>qml/main.qml</file>
         <file>qml/GridItemDelegate.qml</file>
         <file>qml/AllAppsView.qml</file>
+        <file>qml/CategoryView.qml</file>
     </qresource>
 </RCC>

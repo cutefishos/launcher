@@ -23,8 +23,10 @@
 #include <QObject>
 #include <QLoggingCategory>
 #include <QAbstractListModel>
+#include <QSettings>
 
-class LauncherItem;
+#include "launcheritem.h"
+
 class LauncherModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -64,16 +66,12 @@ public:
     Q_INVOKABLE void sendToDock(const QString &key);
     Q_INVOKABLE void removeFromDock(const QString &desktop);
 
-    LauncherItem *findApplication(const QString &appId);
+    int findById(const QString &id);
 
     static void refresh(LauncherModel *manager);
 
-    Q_INVOKABLE LauncherItem *get(int index) const;
-
-    Q_INVOKABLE QString getIconName(const QString &appId);
-    Q_INVOKABLE int indexFromAppId(const QString &appId) const;
-
     Q_INVOKABLE void move(int from, int to, int page, int pageCount);
+    Q_INVOKABLE void save();
 
 public Q_SLOTS:
     Q_INVOKABLE bool launch(const QString &path);
@@ -88,11 +86,12 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void addApp(const QString &fileName);
-    void removeApp(QObject *object);
+    void removeApp(LauncherItem *item);
 
 private:
     QList<LauncherItem *> m_items;
     QList<LauncherItem *> m_searchItems;
+    QSettings m_settings;
     Mode m_mode;
 };
 

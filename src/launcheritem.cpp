@@ -19,8 +19,31 @@
 
 #include "launcheritem.h"
 
-LauncherItem::LauncherItem(QObject *parent)
-    : QObject(parent)
+LauncherItem::LauncherItem()
 {
 
+}
+
+LauncherItem::LauncherItem(const LauncherItem &item)
+{
+
+}
+
+LauncherItem::~LauncherItem()
+{
+
+}
+
+QDataStream &operator<<(QDataStream &argument, const LauncherItem &item)
+{
+    argument << item.id << item.name;
+
+    return argument;
+}
+
+const QDataStream &operator>>(QDataStream &argument, LauncherItem &item)
+{
+    argument >> item.id << item.name;
+
+    return argument;
 }

@@ -35,6 +35,8 @@ Item {
     property int pageCount: 0
 
     Drag.active: iconMouseArea.drag.active
+    Drag.mimeData: [model.appId]
+    Drag.keys: ["cutefish-launcher"]
     Drag.dragType: Drag.Automatic
     Drag.supportedActions: Qt.MoveAction
     Drag.hotSpot.x: icon.width / 2
@@ -181,5 +183,9 @@ Item {
         width: parent.width - 2 * FishUI.Units.smallSpacing
         height: fontMetrics.height * 2
         color: "white"
+
+        MouseArea {
+            anchors.fill: parent
+        }
     }
 }
