@@ -28,33 +28,14 @@
     </message>
 </context>
 <context>
-    <name>LauncherGridDelegate</name>
-    <message>
-        <source>Open</source>
-        <translation type="vanished">打开</translation>
-    </message>
-    <message>
-        <source>Send to dock</source>
-        <translation type="vanished">发送到程序坞</translation>
-    </message>
-    <message>
-        <source>Remove from dock</source>
-        <translation type="vanished">在程序坞中移除</translation>
-    </message>
-    <message>
-        <source>Uninstall</source>
-        <translation type="vanished">卸载</translation>
-    </message>
-</context>
-<context>
     <name>main</name>
     <message>
-        <location filename="../qml/main.qml" line="184"/>
+        <location filename="../qml/main.qml" line="218"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="275"/>
+        <location filename="../qml/main.qml" line="293"/>
         <source>Not found</source>
         <translation>未找到</translation>
     </message>

@@ -167,7 +167,7 @@ Item {
 
             TextMetrics {
                 id: fontMetrics
-                text: textField.placeholderText
+                text: _placeLabel.text
             }
 
             TextField {
@@ -176,31 +176,49 @@ Item {
                 width: searchItem.width * 0.2
                 height: parent.height
 
-                leftPadding: FishUI.Units.largeSpacing
+                leftPadding: textField.activeFocus ? _placeImage.width + FishUI.Units.largeSpacing : FishUI.Units.largeSpacing
                 rightPadding: FishUI.Units.largeSpacing
 
                 selectByMouse: true
 
-                placeholderText: qsTr("Search")
+                // placeholderText: qsTr("Search")
                 wrapMode: Text.NoWrap
 
                 color: "white"
 
-                Label {
-                    id: placeholder
-                    x: textField.leftPadding
-                    y: textField.topPadding
-                    width: textField.width - (textField.leftPadding + textField.rightPadding)
-                    height: textField.height - (textField.topPadding + textField.bottomPadding)
-                    text: textField.placeholderText
-                    font: textField.font
-                    color: "white"
-                    opacity: 0.65
-                    visible: !textField.length && !textField.preeditText && (!textField.activeFocus || textField.horizontalAlignment !== Qt.AlignHCenter)
-                    elide: Text.ElideRight
-                    wrapMode: Text.NoWrap
-                    horizontalAlignment: Text.AlignLeft
-                    verticalAlignment: textField.verticalAlignment
+                Item {
+                    id: placeHolderItem
+                    height: textField.height
+                    width: _placeHolderLayout.implicitWidth
+                    opacity: 0.6
+                    x: textField.activeFocus ? FishUI.Units.smallSpacing : (textField.width - placeHolderItem.width) / 2
+                    y: 0
+
+                    Behavior on x {
+                        NumberAnimation {
+                            duration: 200
+                        }
+                    }
+
+                    RowLayout {
+                        id: _placeHolderLayout
+                        anchors.fill: parent
+
+                        Image {
+                            id: _placeImage
+                            height: placeHolderItem.height - FishUI.Units.largeSpacing
+                            width: height
+                            sourceSize: Qt.size(width, height)
+                            source: "qrc:/images/system-search-symbolic.svg"
+                        }
+
+                        Label {
+                            id: _placeLabel
+                            color: "white"
+                            text: qsTr("Search")
+                            visible: !textField.length && !textField.preeditText && (!textField.activeFocus || textField.horizontalAlignment !== Qt.AlignHCenter)
+                        }
+                    }
                 }
 
                 background: Rectangle {

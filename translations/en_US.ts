@@ -28,25 +28,14 @@
     </message>
 </context>
 <context>
-    <name>LauncherGridDelegate</name>
-    <message>
-        <source>Open</source>
-        <translation type="vanished">Open</translation>
-    </message>
-    <message>
-        <source>Uninstall</source>
-        <translation type="vanished">Uninstall</translation>
-    </message>
-</context>
-<context>
     <name>main</name>
     <message>
-        <location filename="../qml/main.qml" line="184"/>
+        <location filename="../qml/main.qml" line="218"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="275"/>
+        <location filename="../qml/main.qml" line="293"/>
         <source>Not found</source>
         <translation>Not found</translation>
     </message>
