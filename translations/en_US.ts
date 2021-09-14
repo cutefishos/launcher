@@ -11,12 +11,12 @@
     <message>
         <location filename="../qml/GridItemDelegate.qml" line="105"/>
         <source>Send to dock</source>
-        <translation type="unfinished"></translation>
+        <translation>Send to dock</translation>
     </message>
     <message>
         <location filename="../qml/GridItemDelegate.qml" line="111"/>
         <source>Remove from dock</source>
-        <translation type="unfinished"></translation>
+        <translation>Remove from dock</translation>
     </message>
 </context>
 <context>

@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/launcher.cpp" line="50"/>
         <source>Launcher</source>
-        <translation>Vezérlőpult</translation>
+        <translation>Indító</translation>
     </message>
 </context>
 <context>
