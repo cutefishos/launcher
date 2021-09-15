@@ -37,6 +37,7 @@ Item {
     property real verticalSpacing: launcher.screenRect.height * 0.01
     property real maxSpacing: horizontalSpacing > verticalSpacing ? horizontalSpacing : verticalSpacing
     property bool showed: launcher.showed
+    property int iconSize: root.height < 960 ? 96 : 128
 
     onShowedChanged: {
         if (showed)

@@ -34,9 +34,9 @@
 #include <QTranslator>
 #include <QLocale>
 
-#define DBUS_NAME "org.cutefish.Launcher"
+#define DBUS_NAME "com.cutefish.Launcher"
 #define DBUS_PATH "/Launcher"
-#define DBUS_INTERFACE "org.cutefish.Launcher"
+#define DBUS_INTERFACE "com.cutefish.Launcher"
 
 int main(int argc, char *argv[])
 {

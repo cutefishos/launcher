@@ -32,7 +32,7 @@ set(RESOURCES
 )
 
 qt5_add_dbus_adaptor(DBUS_SRCS
-    src/org.cutefish.Launcher.xml
+    src/com.cutefish.Launcher.xml
     src/launcher.h
     Launcher
     launcheradaptor

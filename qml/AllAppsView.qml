@@ -32,7 +32,7 @@ ListView {
     property var sourceModel: launcherModel
     property var modelCount: sourceModel.count
 
-    property int iconSize: 128 + FishUI.Units.largeSpacing * 2
+    property int iconSize: root.iconSize + FishUI.Units.largeSpacing * 2
     property int cellWidth: iconSize + calcExtraSpacing(iconSize, control.width)
     property int cellHeight: iconSize + calcExtraSpacing(iconSize, control.height)
 
