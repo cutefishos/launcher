@@ -19,7 +19,7 @@ set(SRCS
     src/iconthemeimageprovider.cpp
     src/launcher.cpp
     src/launchermodel.cpp
-    src/launcheritem.cpp
+    src/appitem.cpp
     src/main.cpp
     src/pagemodel.cpp
     src/ucunits.cpp

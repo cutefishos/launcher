@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2021 CutefishOS.
  *
- * Author:     revenmartin <revenmartin@gmail.com>
+ * Author:     Reion Wong <reion@cutefishos.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,26 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LAUNCHERITEM_H
-#define LAUNCHERITEM_H
+#ifndef APPITEM_H
+#define APPITEM_H
 
-#include <QObject>
-#include <QDataStream>
+#include <QString>
+#include <QStringList>
+#include <QMetaType>
 
-class LauncherItem : public QObject
+class AppItem
 {
-    Q_OBJECT
-
 public:
-    LauncherItem();
-    LauncherItem(const LauncherItem &item);
-    ~LauncherItem();
+    AppItem();
+    AppItem(const AppItem &info);
+    ~AppItem();
 
-    inline bool operator==(const LauncherItem &other) const { return id == other.id; }
-    friend QDataStream &operator<<(QDataStream &argument, const LauncherItem &item);
-    friend const QDataStream &operator>>(QDataStream &argument, LauncherItem &item);
+    inline bool operator==(const AppItem &other) const { return id == other.id; }
+    friend QDataStream &operator<<(QDataStream &argument, const AppItem &info);
+    friend const QDataStream &operator>>(QDataStream &argument, AppItem &info);
 
-public:
     QString id;
     QString name;
     QString genericName;
@@ -45,6 +43,6 @@ public:
     QStringList args;
 };
 
-Q_DECLARE_METATYPE(LauncherItem)
+Q_DECLARE_METATYPE(AppItem)
 
-#endif // LAUNCHERITEM_H
+#endif // APPITEM_H

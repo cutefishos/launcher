@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2021 CutefishOS.
  *
- * Author:     revenmartin <revenmartin@gmail.com>
+ * Author:     Reion Wong <reion@cutefishos.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,9 @@
 #include <QLoggingCategory>
 #include <QAbstractListModel>
 #include <QSettings>
+#include <QTimer>
 
-#include "launcheritem.h"
+#include "appitem.h"
 
 class LauncherModel : public QAbstractListModel
 {
@@ -33,8 +34,7 @@ class LauncherModel : public QAbstractListModel
     Q_PROPERTY(int count READ count NOTIFY countChanged)
 
 public:
-    enum Roles
-    {
+    enum Roles {
         AppIdRole = Qt::UserRole + 1,
         ApplicationRole,
         NameRole,
@@ -73,6 +73,8 @@ public:
     Q_INVOKABLE void move(int from, int to, int page, int pageCount);
     Q_INVOKABLE void save();
 
+    void delaySave();
+
 public Q_SLOTS:
     Q_INVOKABLE bool launch(const QString &path);
     Q_INVOKABLE bool launch() { return launch(QString()); }
@@ -80,19 +82,22 @@ public Q_SLOTS:
 Q_SIGNALS:
     void countChanged();
     void refreshed();
-    void applicationAdded(LauncherItem *app);
-    void applicationRemoved(LauncherItem *app);
     void applicationLaunched();
 
 private Q_SLOTS:
+    void onRefreshed();
     void addApp(const QString &fileName);
-    void removeApp(LauncherItem *item);
+    void removeApp(const QString &fileName);
 
 private:
-    QList<LauncherItem *> m_items;
-    QList<LauncherItem *> m_searchItems;
+    QList<AppItem> m_appItems;
+    QList<AppItem> m_searchItems;
+
+    QTimer m_saveTimer;
     QSettings m_settings;
     Mode m_mode;
+
+    bool m_needSort;
 };
 
 #endif // LAUNCHERMODEL_H

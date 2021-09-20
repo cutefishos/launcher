@@ -25,7 +25,6 @@
 #include <QCommandLineParser>
 
 #include "launcher.h"
-#include "launcheritem.h"
 #include "launchermodel.h"
 #include "pagemodel.h"
 #include "iconitem.h"
@@ -43,8 +42,6 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QByteArray uri = "Cutefish.Launcher";
-    qRegisterMetaType<LauncherItem>("LauncherItem");
-    qmlRegisterType<LauncherItem>(uri, 1, 0, "LauncherItem");
     qmlRegisterType<LauncherModel>(uri, 1, 0, "LauncherModel");
     qmlRegisterType<PageModel>(uri, 1, 0, "PageModel");
     qmlRegisterType<IconItem>(uri, 1, 0, "IconItem");

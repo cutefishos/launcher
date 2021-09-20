@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2021 CutefishOS.
  *
- * Author:     revenmartin <revenmartin@gmail.com>
+ * Author:     Reion Wong <reion@cutefishos.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,7 +47,16 @@ LauncherModel::LauncherModel(QObject *parent)
     : QAbstractListModel(parent)
     , m_settings("cutefishos", "launcher-applist", this)
     , m_mode(NormalMode)
+    , m_needSort(false)
 {
+    // Init datas.
+    QByteArray listByteArray = m_settings.value("list").toByteArray();
+    QDataStream in(&listByteArray, QIODevice::ReadOnly);
+    in >> m_appItems;
+
+    if (m_appItems.isEmpty())
+        m_needSort = true;
+
     QtConcurrent::run(LauncherModel::refresh, this);
 
     QFileSystemWatcher *watcher = new QFileSystemWatcher(this);
@@ -56,24 +65,18 @@ LauncherModel::LauncherModel(QObject *parent)
         QtConcurrent::run(LauncherModel::refresh, this);
     });
 
+    m_saveTimer.setInterval(1000);
+    connect(&m_saveTimer, &QTimer::timeout, this, &LauncherModel::save);
+
     connect(this, &QAbstractItemModel::rowsInserted, this, &LauncherModel::countChanged);
     connect(this, &QAbstractItemModel::rowsRemoved, this, &LauncherModel::countChanged);
     connect(this, &QAbstractItemModel::modelReset, this, &LauncherModel::countChanged);
     connect(this, &QAbstractItemModel::layoutChanged, this, &LauncherModel::countChanged);
-
-    connect(this, &LauncherModel::refreshed, this, [=] {
-        beginResetModel();
-        std::sort(m_items.begin(), m_items.end(), [=] (LauncherItem *a, LauncherItem *b) {
-            return a->name < b->name;
-        });
-        endResetModel();
-    });
+    connect(this, &LauncherModel::refreshed, this, &LauncherModel::onRefreshed);
 }
 
 LauncherModel::~LauncherModel()
 {
-    while (!m_items.isEmpty())
-        delete m_items.takeFirst();
 }
 
 int LauncherModel::count() const
@@ -88,7 +91,7 @@ int LauncherModel::rowCount(const QModelIndex &parent) const
     if (m_mode == SearchMode)
         return m_searchItems.size();
 
-    return m_items.size();
+    return m_appItems.size();
 }
 
 QHash<int, QByteArray> LauncherModel::roleNames() const
@@ -112,21 +115,21 @@ QVariant LauncherModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    LauncherItem *item = m_mode == NormalMode
-            ? m_items.at(index.row()) : m_searchItems.at(index.row());
+    AppItem appItem = m_mode == NormalMode ? m_appItems.at(index.row())
+                                           : m_searchItems.at(index.row());
 
     switch (role) {
     case AppIdRole:
-        return item->id;
+        return appItem.id;
     case NameRole:
-        return item->name;
+        return appItem.name;
     case IconNameRole:
-        return item->iconName;
+        return appItem.iconName;
     case FilterInfoRole:
-        return QString(item->name + QStringLiteral(" ")
-                       + item->genericName
+        return QString(appItem.name + QStringLiteral(" ")
+                       + appItem.genericName
                        + QStringLiteral(" ")
-                       + item->comment);
+                       + appItem.comment);
     default:
         return QVariant();
     }
@@ -137,12 +140,12 @@ void LauncherModel::search(const QString &key)
     m_mode = key.isEmpty() ? NormalMode : SearchMode;
     m_searchItems.clear();
 
-    for (LauncherItem *item : qAsConst(m_items)) {
-        const QString &name = item->name;
-        const QString &fileName = item->id;
+    for (const AppItem &item : qAsConst(m_appItems)) {
+        const QString &name = item.name;
+        const QString &fileName = item.id;
 
         if (name.contains(key, Qt::CaseInsensitive) ||
-            fileName.contains(key, Qt::CaseInsensitive)) {
+                fileName.contains(key, Qt::CaseInsensitive)) {
             m_searchItems.append(item);
             continue;
         }
@@ -181,8 +184,8 @@ void LauncherModel::removeFromDock(const QString &desktop)
 
 int LauncherModel::findById(const QString &id)
 {
-    for (int i = 0; i < m_items.size(); ++i) {
-        if (m_items.at(i)->id == id)
+    for (int i = 0; i < m_appItems.size(); ++i) {
+        if (m_appItems.at(i).id == id)
             return i;
     }
 
@@ -192,8 +195,8 @@ int LauncherModel::findById(const QString &id)
 void LauncherModel::refresh(LauncherModel *manager)
 {
     QStringList addedEntries;
-    for (LauncherItem *item : qAsConst(manager->m_items))
-        addedEntries.append(item->id);
+    for (const AppItem &item : qAsConst(manager->m_appItems))
+        addedEntries.append(item.id);
 
     QStringList allEntries;
     QDirIterator it("/usr/share/applications", { "*.desktop" }, QDir::NoFilter, QDirIterator::Subdirectories);
@@ -207,14 +210,13 @@ void LauncherModel::refresh(LauncherModel *manager)
     }
 
     for (const QString &fileName : allEntries) {
-        if (!addedEntries.contains(fileName))
+        //if (!addedEntries.contains(fileName))
             QMetaObject::invokeMethod(manager, "addApp", Q_ARG(QString, fileName));
     }
 
-    for (LauncherItem *item : qAsConst(manager->m_items)) {
-        if (!allEntries.contains(item->id))
-            QMetaObject::invokeMethod(manager, "removeApp", Q_ARG(LauncherItem *, item));
-    }
+    for (const AppItem &item : qAsConst(manager->m_appItems))
+        if (!allEntries.contains(item.id))
+            QMetaObject::invokeMethod(manager, "removeApp", Q_ARG(QString, item.id));
 
     // Signal the model was refreshed
     QMetaObject::invokeMethod(manager, "refreshed");
@@ -228,7 +230,7 @@ void LauncherModel::move(int from, int to, int page, int pageCount)
     int newFrom = from + (page * pageCount);
     int newTo = to + (page * pageCount);
 
-    m_items.move(newFrom, newTo);
+    m_appItems.move(newFrom, newTo);
 
 //    if (from < to)
 //        beginMoveRows(QModelIndex(), from, from, QModelIndex(), to + 1);
@@ -236,14 +238,25 @@ void LauncherModel::move(int from, int to, int page, int pageCount)
 //        beginMoveRows(QModelIndex(), from, from, QModelIndex(), to);
 
     //    endMoveRows();
+
+    delaySave();
 }
 
 void LauncherModel::save()
 {
+    m_settings.clear();
     QByteArray datas;
     QDataStream out(&datas, QIODevice::WriteOnly);
-    out << m_items;
+    out << m_appItems;
     m_settings.setValue("list", datas);
+}
+
+void LauncherModel::delaySave()
+{
+    if (m_saveTimer.isActive())
+        m_saveTimer.stop();
+
+    m_saveTimer.start();
 }
 
 bool LauncherModel::launch(const QString &path)
@@ -251,8 +264,8 @@ bool LauncherModel::launch(const QString &path)
     int index = findById(path);
 
     if (index != -1) {
-        LauncherItem *item = m_items.at(index);
-        QStringList args = item->args;
+        const AppItem &item = m_appItems.at(index);
+        QStringList args = item.args;
         QScopedPointer<QProcess> p(new QProcess);
         p->setStandardInputFile(QProcess::nullDevice());
         p->setProcessChannelMode(QProcess::ForwardedChannels);
@@ -275,10 +288,25 @@ bool LauncherModel::launch(const QString &path)
     return false;
 }
 
+void LauncherModel::onRefreshed()
+{
+    if (!m_needSort)
+        return;
+
+    m_needSort = false;
+
+    beginResetModel();
+    std::sort(m_appItems.begin(), m_appItems.end(), [=] (AppItem &a, AppItem &b) {
+        return a.name < b.name;
+    });
+    endResetModel();
+
+    delaySave();
+}
+
 void LauncherModel::addApp(const QString &fileName)
 {
-    if (findById(fileName) != -1)
-        return;
+    int index = findById(fileName) ;
 
     DesktopProperties desktop(fileName, "Desktop Entry");
 
@@ -308,32 +336,43 @@ void LauncherModel::addApp(const QString &fileName)
     appExec = appExec.replace("\"", "");
     appExec = appExec.simplified();
 
-    LauncherItem *item = new LauncherItem;
-    item->id = fileName;
-    item->name = appName;
-    item->genericName = desktop.value("Comment").toString();
-    item->comment = desktop.value("Comment").toString();
-    item->iconName = desktop.value("Icon").toString();
-    item->args = appExec.split(" ");
+    // 存在需要更新信息
+    if (index >= 0 && index <= m_appItems.size()) {
+        AppItem &item = m_appItems[index];
+        item.name = appName;
+        item.genericName = desktop.value("Comment").toString();
+        item.comment = desktop.value("Comment").toString();
+        item.iconName = desktop.value("Icon").toString();
+        item.args = appExec.split(" ");
+        emit dataChanged(LauncherModel::index(index), LauncherModel::index(index));
+    } else {
+        AppItem appItem;
+        appItem.id = fileName;
+        appItem.name = appName;
+        appItem.genericName = desktop.value("Comment").toString();
+        appItem.comment = desktop.value("Comment").toString();
+        appItem.iconName = desktop.value("Icon").toString();
+        appItem.args = appExec.split(" ");
 
-    beginInsertRows(QModelIndex(), m_items.count(), m_items.count());
-    m_items.append(item);
-    qDebug() << "added: " << item->name;
-    // Q_EMIT applicationAdded(item);
-    endInsertRows();
+        beginInsertRows(QModelIndex(), m_appItems.count(), m_appItems.count());
+        m_appItems.append(appItem);
+        qDebug() << "added: " << appItem.name;
+        endInsertRows();
+
+        if (!m_needSort)
+            delaySave();
+    }
 }
 
-void LauncherModel::removeApp(LauncherItem *item)
+void LauncherModel::removeApp(const QString &fileName)
 {
-    int index = m_items.indexOf(item);
+    int index = findById(fileName);
     if (index < 0)
         return;
 
     beginRemoveRows(QModelIndex(), index, index);
-    qDebug() << "removed: " << item->name;
-    m_items.removeAt(index);
+    m_appItems.removeAt(index);
     endRemoveRows();
 
-    Q_EMIT applicationRemoved(item);
-    item->deleteLater();
+    delaySave();
 }

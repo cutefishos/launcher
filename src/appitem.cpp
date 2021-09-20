@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2021 CutefishOS.
  *
- * Author:     revenmartin <revenmartin@gmail.com>
+ * Author:     Reion Wong <reion@cutefishos.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,33 +17,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "launcheritem.h"
+#include "appitem.h"
 
-LauncherItem::LauncherItem()
+AppItem::AppItem()
 {
 
 }
 
-LauncherItem::LauncherItem(const LauncherItem &item)
+AppItem::AppItem(const AppItem &info)
+    : id(info.id)
+    , name(info.name)
+    , genericName(info.genericName)
+    , comment(info.comment)
+    , iconName(info.iconName)
+    , args(info.args)
 {
 
 }
 
-LauncherItem::~LauncherItem()
+AppItem::~AppItem()
 {
 
 }
 
-QDataStream &operator<<(QDataStream &argument, const LauncherItem &item)
+QDataStream &operator<<(QDataStream &argument, const AppItem &info)
 {
-    argument << item.id << item.name;
+    argument << info.id << info.name << info.genericName;
+    argument << info.comment << info.iconName;
 
     return argument;
 }
 
-const QDataStream &operator>>(QDataStream &argument, LauncherItem &item)
+const QDataStream &operator>>(QDataStream &argument, AppItem &info)
 {
-    argument >> item.id << item.name;
+    argument >> info.id >> info.name >> info.genericName;
+    argument >> info.comment >> info.iconName;
 
     return argument;
 }
