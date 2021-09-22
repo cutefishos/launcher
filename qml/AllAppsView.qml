@@ -32,9 +32,6 @@ ListView {
     property var sourceModel: launcherModel
     property var modelCount: sourceModel.count
 
-    property int lastCellWidth: 0
-    property int lastCellHeight: 0
-
     property int iconSize: root.iconSize + FishUI.Units.largeSpacing * 2
     property int cellWidth: iconSize + calcExtraSpacing(iconSize, control.width)
     property int cellHeight: iconSize + calcExtraSpacing(iconSize, control.height)
@@ -57,7 +54,7 @@ ListView {
 
     cacheBuffer: control.width * control.count
     boundsBehavior: Flickable.DragOverBounds
-    currentIndex: 0
+    currentIndex: -1
     clip: true
 
     NumberAnimation on contentX {
@@ -97,14 +94,20 @@ ListView {
         }
     }
 
-    delegate: Flow {
+    delegate: GridView {
         id: _page
+
         width: control.width
         height: control.height
 
         readonly property int pageIndex: index
 
-        move: Transition {
+        cellHeight: control.cellHeight
+        cellWidth: control.cellWidth
+
+        interactive: false
+
+        moveDisplaced: Transition {
             NumberAnimation {
                 properties: "x, y"
                 duration: 300
@@ -112,21 +115,19 @@ ListView {
             }
         }
 
-        Repeater {
-            model: PageModel {
-                id: _pageModel
-                sourceModel: launcherModel
-                startIndex: control.pageCount * _page.pageIndex
-                limitCount: control.pageCount
-            }
+        model: PageModel {
+            id: _pageModel
+            sourceModel: launcherModel
+            startIndex: control.pageCount * _page.pageIndex
+            limitCount: control.pageCount
+        }
 
-            delegate: GridItemDelegate {
-                searchMode: control.searchMode
-                pageIndex: _page.pageIndex
-                pageCount: control.pageCount
-                width: control.cellWidth
-                height: control.cellHeight
-            }
+        delegate: GridItemDelegate {
+            searchMode: control.searchMode
+            pageIndex: _page.pageIndex
+            pageCount: control.pageCount
+            width: control.cellWidth
+            height: control.cellHeight
         }
     }
 

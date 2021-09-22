@@ -54,6 +54,7 @@ Launcher::Launcher(bool firstShow, QQuickView *w)
 
     setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
     setTitle(tr("Launcher"));
+    setVisible(true);
     setVisible(firstShow);
 
     // Let the animation in qml be hidden after the execution is complete
