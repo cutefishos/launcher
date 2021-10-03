@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2021 CutefishOS.
  *
- * Author:     revenmartin <revenmartin@gmail.com>
+ * Author:     Reoin Wong <reion@cutefishos.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,8 +110,14 @@ Item {
         id: backend
     }
 
+    Rectangle {
+        anchors.fill: parent
+        color: backend.color
+        visible: backend.type === 1
+    }
+
     Image {
-        id: wallpaper
+        id: wallpaperImage
         anchors.fill: parent
         source: "file://" + backend.path
         sourceSize: Qt.size(launcher.screenRect.width,
@@ -120,21 +126,22 @@ Item {
         asynchronous: false
         cache: false
         smooth: true
+        visible: backend.type === 0
     }
 
     FastBlur {
         id: wallpaperBlur
         anchors.fill: parent
         radius: 72
-        source: wallpaper
-        cached: true
-        visible: true
+        source: wallpaperImage
+        cached: false
+        visible: wallpaperImage.visible
     }
 
     ColorOverlay {
         id: wallpaperColor
         anchors.fill: parent
-        source: wallpaperBlur
+        source: parent
         color: "#000000"
         opacity: backend.dimsWallpaper ? 0.5 : 0.4
         visible: true
