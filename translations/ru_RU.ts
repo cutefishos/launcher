@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/launcher.cpp" line="50"/>
         <source>Launcher</source>
-        <translation type="unfinished">Лаунчер</translation>
+        <translation>Лаунчер</translation>
     </message>
 </context>
 <context>
