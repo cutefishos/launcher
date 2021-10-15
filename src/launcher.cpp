@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QDBusConnection>
 #include <QDBusServiceWatcher>
+#include <QPixmapCache>
 #include <QQmlContext>
 #include <QScreen>
 #include <QTimer>
@@ -141,6 +142,11 @@ bool Launcher::isPinedDock(const QString &desktop)
         return false;
 
     return iface.call("pinned", desktop).arguments().first().toBool();
+}
+
+void Launcher::clearPixmapCache()
+{
+    QPixmapCache::clear();
 }
 
 QRect Launcher::screenRect()

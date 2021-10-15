@@ -51,6 +51,8 @@ public:
     Q_INVOKABLE bool dockAvailable();
     Q_INVOKABLE bool isPinedDock(const QString &desktop);
 
+    Q_INVOKABLE void clearPixmapCache();
+
     QRect screenRect();
 
 signals:

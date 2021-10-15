@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     app.setApplicationName(QStringLiteral("cutefish-launcher"));
 
-    // QPixmapCache::setCacheLimit(1024 * 10);
+    QPixmapCache::setCacheLimit(2048);
 
     QCommandLineParser parser;
     QCommandLineOption showOption(QStringLiteral("show"), "Show Launcher");

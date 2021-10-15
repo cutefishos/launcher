@@ -127,6 +127,8 @@ Item {
         cache: false
         smooth: true
         visible: backend.type === 0
+
+        onSourceChanged: launcher.clearPixmapCache()
     }
 
     FastBlur {
