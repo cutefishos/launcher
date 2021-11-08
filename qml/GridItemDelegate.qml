@@ -30,6 +30,7 @@ Item {
     property bool searchMode: false
     property bool dragStarted: false
     property var dragItemIndex: index
+    property var dragSource: null
 
     property int pageIndex: 0
     property int pageCount: 0
@@ -59,11 +60,26 @@ Item {
                 return
 
             if (drag.source) {
-                launcherModel.move(drag.source.dragItemIndex,
+                control.dragSource = drag.source
+                dragTimer.restart()
+            } else {
+                control.dragSource = null
+                dragTimer.stop()
+            }
+        }
+    }
+
+    Timer {
+        id: dragTimer
+        interval: 300
+        onTriggered: {
+            if (control.dragSource) {
+                launcherModel.move(control.dragSource.dragItemIndex,
                                    control.dragItemIndex,
                                    control.pageIndex,
                                    control.pageCount)
-                _pageModel.move(drag.source.dragItemIndex, control.dragItemIndex)
+                _pageModel.move(control.dragSource.dragItemIndex,
+                                control.dragItemIndex)
             }
         }
     }

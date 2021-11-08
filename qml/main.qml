@@ -39,21 +39,6 @@ Item {
     property bool showed: launcher.showed
     property int iconSize: root.height < 960 ? 96 : 128
 
-    onShowedChanged: {
-        if (showed)
-            searchFieldAni.start()
-    }
-
-    NumberAnimation {
-        id: searchFieldAni
-        from: 0.0
-        to: 1.0
-        target: textField
-        property: "opacity"
-        easing.type: Easing.InQuad
-        duration: 250
-    }
-
 //    onShowedChanged: {
 //        appViewOpacityAni.restart()
 //        blurAnimation.restart()
