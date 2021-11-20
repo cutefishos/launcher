@@ -25,6 +25,7 @@ set(SRCS
     src/ucunits.cpp
     src/listmodelmanager.cpp
     src/iconitem.cpp
+    src/processprovider.cpp
 )
 
 set(RESOURCES

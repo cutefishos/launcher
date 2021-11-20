@@ -19,6 +19,7 @@
 
 #include "launchermodel.h"
 #include "desktopproperties.h"
+#include "processprovider.h"
 
 #include <QDBusInterface>
 #include <QDBusPendingCallWatcher>
@@ -28,7 +29,6 @@
 #include <QFileSystemWatcher>
 #include <QScopedPointer>
 #include <QDirIterator>
-#include <QProcess>
 #include <QDebug>
 #include <QIcon>
 #include <QDir>
@@ -266,23 +266,19 @@ bool LauncherModel::launch(const QString &path)
     if (index != -1) {
         const AppItem &item = m_appItems.at(index);
         QStringList args = item.args;
-        QScopedPointer<QProcess> p(new QProcess);
-        p->setStandardInputFile(QProcess::nullDevice());
-        p->setProcessChannelMode(QProcess::ForwardedChannels);
-
         QString cmd = args.takeFirst();
-        p->setProgram(cmd);
-        p->setArguments(args);
 
         // Because launcher has hidden animation,
         // cutefish-screenshot needs to be processed.
         if (cmd == "cutefish-screenshot") {
-            p->setArguments(QStringList() << "-d" << "200");
+            ProcessProvider::startDetached(cmd, QStringList() << "-d" << "200");
+        } else {
+            ProcessProvider::startDetached(cmd, args);
         }
 
         Q_EMIT applicationLaunched();
 
-        return p->startDetached();
+        return true;
     }
 
     return false;
