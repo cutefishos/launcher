@@ -27,6 +27,7 @@
 #include <QtConcurrent/QtConcurrentRun>
 #include <QRegularExpression>
 #include <QFileSystemWatcher>
+#include <QStandardPaths>
 #include <QScopedPointer>
 #include <QDirIterator>
 #include <QDebug>
@@ -47,7 +48,7 @@ LauncherModel::LauncherModel(QObject *parent)
     : QAbstractListModel(parent)
     , m_settings("cutefishos", "launcher-applist", this)
     , m_mode(NormalMode)
-    , m_needSort(false)
+    , m_firstLoad(false)
 {
     // Init datas.
     QByteArray listByteArray = m_settings.value("list").toByteArray();
@@ -55,7 +56,7 @@ LauncherModel::LauncherModel(QObject *parent)
     in >> m_appItems;
 
     if (m_appItems.isEmpty())
-        m_needSort = true;
+        m_firstLoad = true;
 
     QtConcurrent::run(LauncherModel::refresh, this);
 
@@ -66,6 +67,7 @@ LauncherModel::LauncherModel(QObject *parent)
     });
 
     m_saveTimer.setInterval(1000);
+    m_saveTimer.setSingleShot(true);
     connect(&m_saveTimer, &QTimer::timeout, this, &LauncherModel::save);
 
     connect(this, &QAbstractItemModel::rowsInserted, this, &LauncherModel::countChanged);
@@ -77,6 +79,7 @@ LauncherModel::LauncherModel(QObject *parent)
 
 LauncherModel::~LauncherModel()
 {
+    LauncherModel::save();
 }
 
 int LauncherModel::count() const
@@ -96,17 +99,22 @@ int LauncherModel::rowCount(const QModelIndex &parent) const
 
 QHash<int, QByteArray> LauncherModel::roleNames() const
 {
-    QHash<int, QByteArray> roles;
-    roles.insert(AppIdRole, "appId");
-    roles.insert(ApplicationRole, "application");
-    roles.insert(NameRole, "name");
-    roles.insert(GenericNameRole, "genericName");
-    roles.insert(CommentRole, "comment");
-    roles.insert(IconNameRole, "iconName");
-    roles.insert(CategoriesRole, "categories");
-    roles.insert(FilterInfoRole, "filterInfo");
-    roles.insert(PinnedRole, "pinned");
-    roles.insert(PinnedIndexRole, "pinnedIndex");
+    static QHash<int, QByteArray> roles;
+
+    if (roles.isEmpty()) {
+        roles.insert(AppIdRole, "appId");
+        roles.insert(ApplicationRole, "application");
+        roles.insert(NameRole, "name");
+        roles.insert(GenericNameRole, "genericName");
+        roles.insert(CommentRole, "comment");
+        roles.insert(IconNameRole, "iconName");
+        roles.insert(CategoriesRole, "categories");
+        roles.insert(FilterInfoRole, "filterInfo");
+        roles.insert(PinnedRole, "pinned");
+        roles.insert(PinnedIndexRole, "pinnedIndex");
+        roles.insert(NewInstalledRole, "newInstalled");
+    }
+
     return roles;
 }
 
@@ -130,9 +138,11 @@ QVariant LauncherModel::data(const QModelIndex &index, int role) const
                        + appItem.genericName
                        + QStringLiteral(" ")
                        + appItem.comment);
-    default:
-        return QVariant();
+    case NewInstalledRole:
+        return appItem.newInstalled;
     }
+
+    return QVariant();
 }
 
 void LauncherModel::search(const QString &key)
@@ -165,6 +175,20 @@ void LauncherModel::sendToDock(const QString &key)
                                                                "add");
         message.setArguments(QList<QVariant>() << key);
         QDBusConnection::sessionBus().asyncCall(message);
+    }
+}
+
+void LauncherModel::sendToDesktop(const QString &key)
+{
+    int index = findById(key);
+
+    if (index != -1) {
+        QFileInfo info(key);
+
+        QString newFileName = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+        newFileName.append(QString("/%1").arg(info.fileName()));
+
+        QFile::copy(key, newFileName);
     }
 }
 
@@ -264,9 +288,15 @@ bool LauncherModel::launch(const QString &path)
     int index = findById(path);
 
     if (index != -1) {
-        const AppItem &item = m_appItems.at(index);
+        AppItem &item = m_appItems[index];
         QStringList args = item.args;
         QString cmd = args.takeFirst();
+
+        if (item.newInstalled) {
+            item.newInstalled = false;
+            emit dataChanged(LauncherModel::index(index), LauncherModel::index(index));
+            delaySave();
+        }
 
         // Because launcher has hidden animation,
         // cutefish-screenshot needs to be processed.
@@ -286,10 +316,10 @@ bool LauncherModel::launch(const QString &path)
 
 void LauncherModel::onRefreshed()
 {
-    if (!m_needSort)
+    if (!m_firstLoad)
         return;
 
-    m_needSort = false;
+    m_firstLoad = false;
 
     beginResetModel();
     std::sort(m_appItems.begin(), m_appItems.end(), [=] (AppItem &a, AppItem &b) {
@@ -349,14 +379,16 @@ void LauncherModel::addApp(const QString &fileName)
         appItem.comment = desktop.value("Comment").toString();
         appItem.iconName = desktop.value("Icon").toString();
         appItem.args = appExec.split(" ");
+        appItem.newInstalled = true;
 
         beginInsertRows(QModelIndex(), m_appItems.count(), m_appItems.count());
         m_appItems.append(appItem);
         qDebug() << "added: " << appItem.name;
         endInsertRows();
 
-        if (!m_needSort)
+        if (!m_firstLoad) {
             delaySave();
+        }
     }
 }
 

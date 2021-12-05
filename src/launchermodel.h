@@ -44,7 +44,8 @@ public:
         CategoriesRole,
         FilterInfoRole,
         PinnedRole,
-        PinnedIndexRole
+        PinnedIndexRole,
+        NewInstalledRole
     };
     Q_ENUM(Roles)
 
@@ -64,6 +65,7 @@ public:
 
     Q_INVOKABLE void search(const QString &key);
     Q_INVOKABLE void sendToDock(const QString &key);
+    Q_INVOKABLE void sendToDesktop(const QString &key);
     Q_INVOKABLE void removeFromDock(const QString &desktop);
 
     int findById(const QString &id);
@@ -97,7 +99,7 @@ private:
     QSettings m_settings;
     Mode m_mode;
 
-    bool m_needSort;
+    bool m_firstLoad;
 };
 
 #endif // LAUNCHERMODEL_H

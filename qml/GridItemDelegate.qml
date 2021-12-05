@@ -123,6 +123,12 @@ Item {
         }
 
         MenuItem {
+            id: sendToDesktop
+            text: qsTr("Send to desktop")
+            onTriggered: launcherModel.sendToDesktop(model.appId)
+        }
+
+        MenuItem {
             id: removeFromDock
             text: qsTr("Remove from dock")
             onTriggered: launcherModel.removeFromDock(model.appId)
@@ -176,6 +182,24 @@ Item {
         id: fontMetrics
         font.family: label.font.family
         text: label.text
+    }
+
+    Rectangle {
+        id: newInstallPoint
+
+        width: 6
+        height: 6
+
+        visible: model.newInstalled
+
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            bottom: label.top
+            bottomMargin: FishUI.Units.smallSpacing
+        }
+
+        color: FishUI.Theme.highlightColor
+        radius: height / 2
     }
 
     Label {

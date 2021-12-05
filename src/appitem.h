@@ -41,6 +41,8 @@ public:
     QString comment;
     QString iconName;
     QStringList args;
+
+    bool newInstalled;
 };
 
 Q_DECLARE_METATYPE(AppItem)

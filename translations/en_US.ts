@@ -4,17 +4,22 @@
 <context>
     <name>GridItemDelegate</name>
     <message>
-        <location filename="../qml/GridItemDelegate.qml" line="99"/>
+        <location filename="../qml/GridItemDelegate.qml" line="115"/>
         <source>Open</source>
         <translation type="unfinished">Open</translation>
     </message>
     <message>
-        <location filename="../qml/GridItemDelegate.qml" line="105"/>
+        <location filename="../qml/GridItemDelegate.qml" line="121"/>
         <source>Send to dock</source>
         <translation>Send to dock</translation>
     </message>
     <message>
-        <location filename="../qml/GridItemDelegate.qml" line="111"/>
+        <location filename="../qml/GridItemDelegate.qml" line="127"/>
+        <source>Send to desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/GridItemDelegate.qml" line="133"/>
         <source>Remove from dock</source>
         <translation>Remove from dock</translation>
     </message>
@@ -22,7 +27,7 @@
 <context>
     <name>Launcher</name>
     <message>
-        <location filename="../src/launcher.cpp" line="56"/>
+        <location filename="../src/launcher.cpp" line="57"/>
         <source>Launcher</source>
         <translation>Launcher</translation>
     </message>
@@ -30,12 +35,12 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../qml/main.qml" line="218"/>
+        <location filename="../qml/main.qml" line="213"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="293"/>
+        <location filename="../qml/main.qml" line="288"/>
         <source>Not found</source>
         <translation>Not found</translation>
     </message>

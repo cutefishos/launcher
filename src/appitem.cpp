@@ -20,6 +20,7 @@
 #include "appitem.h"
 
 AppItem::AppItem()
+    : newInstalled(false)
 {
 
 }
@@ -31,6 +32,7 @@ AppItem::AppItem(const AppItem &info)
     , comment(info.comment)
     , iconName(info.iconName)
     , args(info.args)
+    , newInstalled(false)
 {
 
 }
