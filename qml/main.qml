@@ -39,6 +39,69 @@ Item {
     property bool showed: launcher.showed
     property int iconSize: root.height < 960 ? 96 : 128
 
+    property alias uninstallDialog: _uninstallDialog
+
+    AppManager {
+        id: appManager
+    }
+
+    Dialog {
+        id: _uninstallDialog
+
+        property var desktopPath: ""
+        property var appName: ""
+
+        width: _uninstallDialogLayout.implicitWidth + FishUI.Units.largeSpacing * 2
+        height: _uninstallDialogLayout.implicitHeight + FishUI.Units.largeSpacing * 2
+
+        modal: true
+
+        x: (root.width - width) / 2
+        y: (root.height - height) / 2
+
+        ColumnLayout {
+            id: _uninstallDialogLayout
+            anchors.centerIn: parent
+            anchors.margins: FishUI.Units.largeSpacing
+            spacing: FishUI.Units.largeSpacing * 1.5
+
+            Label {
+                text: qsTr("Are you sure you want to uninstall %1 ?").arg(_uninstallDialog.appName)
+                wrapMode: Text.WordWrap
+            }
+
+            RowLayout {
+                spacing: FishUI.Units.largeSpacing
+
+                Button {
+                    text: qsTr("Cancel")
+                    onClicked: _uninstallDialog.close()
+                    Layout.fillWidth: true
+                }
+
+                Button {
+                    flat: true
+                    text: qsTr("Uninstall")
+                    Layout.fillWidth: true
+                    onClicked: {
+                        _uninstallDialog.close()
+                        appManager.uninstall(_uninstallDialog.desktopPath)
+                    }
+                }
+            }
+        }
+    }
+
+    Connections {
+        target: launcher
+
+        function onVisibleChanged(visible) {
+            if (!visible) {
+                _uninstallDialog.close()
+            }
+        }
+    }
+
 //    onShowedChanged: {
 //        appViewOpacityAni.restart()
 //        blurAnimation.restart()

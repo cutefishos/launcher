@@ -21,6 +21,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.12
+import QtQuick.Layouts 1.12
 import FishUI 1.0 as FishUI
 import Cutefish.Launcher 1.0
 
@@ -134,6 +135,16 @@ Item {
             onTriggered: launcherModel.removeFromDock(model.appId)
         }
 
+        MenuItem {
+            id: uninstallItem
+            text: qsTr("Uninstall")
+            onTriggered: {
+                root.uninstallDialog.desktopPath = model.appId
+                root.uninstallDialog.appName = model.name
+                root.uninstallDialog.visible = true
+            }
+        }
+
         // MenuItem {
         //     text: qsTr("Uninstall")
         //     onTriggered: {}
@@ -155,6 +166,7 @@ Item {
             if (mouse.button == Qt.LeftButton)
                 launcherModel.launch(model.appId)
             else if (mouse.button == Qt.RightButton) {
+                uninstallItem.visible = appManager.isCutefishOS()
                 _itemMenu.updateActions()
                 _itemMenu.popup()
             }

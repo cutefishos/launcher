@@ -28,6 +28,7 @@
 #include "launchermodel.h"
 #include "pagemodel.h"
 #include "iconitem.h"
+#include "appmanager.h"
 
 #include <QDebug>
 #include <QTranslator>
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<LauncherModel>(uri, 1, 0, "LauncherModel");
     qmlRegisterType<PageModel>(uri, 1, 0, "PageModel");
     qmlRegisterType<IconItem>(uri, 1, 0, "IconItem");
+    qmlRegisterType<AppManager>(uri, 1, 0, "AppManager");
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     qmlRegisterType<QAbstractItemModel>();
