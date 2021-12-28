@@ -202,7 +202,7 @@ Item {
         width: 6
         height: 6
 
-        visible: model.newInstalled
+        visible: !dragStarted && model.newInstalled
 
         anchors {
             horizontalCenter: parent.horizontalCenter

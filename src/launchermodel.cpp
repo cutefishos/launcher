@@ -46,6 +46,7 @@ static QByteArray detectDesktopEnvironment()
 
 LauncherModel::LauncherModel(QObject *parent)
     : QAbstractListModel(parent)
+    , m_fileWatcher(new QFileSystemWatcher(this))
     , m_settings("cutefishos", "launcher-applist", this)
     , m_mode(NormalMode)
     , m_firstLoad(false)
@@ -60,9 +61,9 @@ LauncherModel::LauncherModel(QObject *parent)
 
     QtConcurrent::run(LauncherModel::refresh, this);
 
-    QFileSystemWatcher *watcher = new QFileSystemWatcher(this);
-    watcher->addPath("/usr/share/applications");
-    connect(watcher, &QFileSystemWatcher::directoryChanged, this, [this](const QString &) {
+    m_fileWatcher->addPath("/usr/share/applications");
+    connect(m_fileWatcher, &QFileSystemWatcher::fileChanged, this, &LauncherModel::onFileChanged);
+    connect(m_fileWatcher, &QFileSystemWatcher::directoryChanged, this, [this](const QString &) {
         QtConcurrent::run(LauncherModel::refresh, this);
     });
 
@@ -234,8 +235,7 @@ void LauncherModel::refresh(LauncherModel *manager)
     }
 
     for (const QString &fileName : allEntries) {
-        //if (!addedEntries.contains(fileName))
-            QMetaObject::invokeMethod(manager, "addApp", Q_ARG(QString, fileName));
+        QMetaObject::invokeMethod(manager, "addApp", Q_ARG(QString, fileName));
     }
 
     for (const AppItem &item : qAsConst(manager->m_appItems))
@@ -330,9 +330,39 @@ void LauncherModel::onRefreshed()
     delaySave();
 }
 
+void LauncherModel::onFileChanged(const QString &path)
+{
+    int index = findById(path);
+
+    if (index == 0) {
+        return;
+    }
+
+    AppItem &item = m_appItems[index];
+    DesktopProperties desktop(item.id, "Desktop Entry");
+    QString appName = desktop.value(QString("Name[%1]").arg(QLocale::system().name())).toString();
+    QString appExec = desktop.value("Exec").toString();
+
+    // Update datas.
+    if (appName.isEmpty())
+        appName = desktop.value("Name").toString();
+
+    appExec.remove(QRegularExpression("%."));
+    appExec.remove(QRegularExpression("^\""));
+    appExec = appExec.replace("\"", "");
+    appExec = appExec.simplified();
+    item.name = appName;
+    item.genericName = desktop.value("Comment").toString();
+    item.comment = desktop.value("Comment").toString();
+    item.iconName = desktop.value("Icon").toString();
+    item.args = appExec.split(" ");
+
+    emit dataChanged(LauncherModel::index(index), LauncherModel::index(index));
+}
+
 void LauncherModel::addApp(const QString &fileName)
 {
-    int index = findById(fileName) ;
+    int index = findById(fileName);
 
     DesktopProperties desktop(fileName, "Desktop Entry");
 
@@ -383,13 +413,17 @@ void LauncherModel::addApp(const QString &fileName)
 
         beginInsertRows(QModelIndex(), m_appItems.count(), m_appItems.count());
         m_appItems.append(appItem);
-        qDebug() << "added: " << appItem.name;
+        qDebug() << "added: " << appItem.name << appItem.newInstalled;
         endInsertRows();
 
         if (!m_firstLoad) {
             delaySave();
         }
     }
+
+    // Update desktop files.
+    if (!m_fileWatcher->files().contains(fileName))
+        m_fileWatcher->addPath(fileName);
 }
 
 void LauncherModel::removeApp(const QString &fileName)
@@ -403,4 +437,8 @@ void LauncherModel::removeApp(const QString &fileName)
     endRemoveRows();
 
     delaySave();
+
+    // Remove
+    if (m_fileWatcher->files().contains(fileName))
+        m_fileWatcher->removePath(fileName);
 }

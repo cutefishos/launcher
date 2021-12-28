@@ -21,6 +21,7 @@
 #define LAUNCHERMODEL_H
 
 #include <QObject>
+#include <QFileSystemWatcher>
 #include <QLoggingCategory>
 #include <QAbstractListModel>
 #include <QSettings>
@@ -88,12 +89,15 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void onRefreshed();
+    void onFileChanged(const QString &path);
     void addApp(const QString &fileName);
     void removeApp(const QString &fileName);
 
 private:
     QList<AppItem> m_appItems;
     QList<AppItem> m_searchItems;
+
+    QFileSystemWatcher *m_fileWatcher;
 
     QTimer m_saveTimer;
     QSettings m_settings;
