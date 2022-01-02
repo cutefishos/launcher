@@ -364,6 +364,7 @@ Item {
             interactive: true
             spacing: FishUI.Units.largeSpacing
             Layout.alignment: Qt.AlignHCenter
+            visible: appView.count > 1
 
             delegate: Rectangle {
                 width: 10
