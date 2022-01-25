@@ -24,7 +24,7 @@ AppManager::AppManager(QObject *parent)
     : QObject(parent)
     , m_iface("com.cutefish.Daemon",
               "/AppManager",
-              "com.cutefish.AppManager", QDBusConnection::sessionBus())
+              "com.cutefish.AppManager", QDBusConnection::systemBus())
 {
 
 }
