@@ -61,7 +61,13 @@ LauncherModel::LauncherModel(QObject *parent)
 
     QtConcurrent::run(LauncherModel::refresh, this);
 
-    m_fileWatcher->addPath("/usr/share/applications");
+    m_appPaths << "/usr/share/applications";
+    m_appPaths << QDir::homePath() + "/.local/share/applications";
+
+    for (const auto & appPath : m_appPaths) {
+        m_fileWatcher->addPath(appPath);
+    }
+
     connect(m_fileWatcher, &QFileSystemWatcher::fileChanged, this, &LauncherModel::onFileChanged);
     connect(m_fileWatcher, &QFileSystemWatcher::directoryChanged, this, [this](const QString &) {
         QtConcurrent::run(LauncherModel::refresh, this);
@@ -224,14 +230,17 @@ void LauncherModel::refresh(LauncherModel *manager)
         addedEntries.append(item.id);
 
     QStringList allEntries;
-    QDirIterator it("/usr/share/applications", { "*.desktop" }, QDir::NoFilter, QDirIterator::Subdirectories);
 
-    while (it.hasNext()) {
-        const auto fileName = it.next();
-        if (!QFile::exists(fileName))
-            continue;
+    for (const auto & appPath : manager->m_appPaths) {
+        QDirIterator it(appPath, { "*.desktop" }, QDir::NoFilter, QDirIterator::Subdirectories);
 
-        allEntries.append(fileName);
+        while (it.hasNext()) {
+            const auto fileName = it.next();
+            if (!QFile::exists(fileName))
+                continue;
+
+            allEntries.append(fileName);
+        }
     }
 
     for (const QString &fileName : allEntries) {
