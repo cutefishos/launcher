@@ -63,6 +63,8 @@ LauncherModel::LauncherModel(QObject *parent)
 
     m_appPaths << "/usr/share/applications";
     m_appPaths << QDir::homePath() + "/.local/share/applications";
+    m_appPaths << "/var/lib/flatpak/exports/share/applications";
+    m_appPaths << QDir::homePath() + "/.local/share/flatpak/exports/share/applications"
 
     for (const auto & appPath : m_appPaths) {
         m_fileWatcher->addPath(appPath);
