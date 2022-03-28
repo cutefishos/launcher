@@ -50,7 +50,6 @@ Launcher::Launcher(bool firstShow, QQuickView *w)
     setFlags(Qt::FramelessWindowHint);
     setResizeMode(QQuickView::SizeRootObjectToView);
     setClearBeforeRendering(true);
-    setScreen(qApp->primaryScreen());
     onGeometryChanged();
 
     setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
@@ -80,9 +79,6 @@ Launcher::Launcher(bool firstShow, QQuickView *w)
     }
 
     connect(qApp, &QApplication::primaryScreenChanged, this, [=] { onGeometryChanged(); });
-
-    connect(qApp->primaryScreen(), &QScreen::virtualGeometryChanged, this, &Launcher::onGeometryChanged);
-    connect(qApp->primaryScreen(), &QScreen::geometryChanged, this, &Launcher::onGeometryChanged);
     connect(this, &QQuickView::activeChanged, this, &Launcher::onActiveChanged);
 }
 
@@ -176,11 +172,18 @@ void Launcher::updateMargins()
 
 void Launcher::onGeometryChanged()
 {
+    disconnect(screen());
+
+    setScreen(qApp->primaryScreen());
+
     if (m_screenRect != qApp->primaryScreen()->geometry()) {
         m_screenRect = qApp->primaryScreen()->geometry();
         setGeometry(m_screenRect);
         emit screenRectChanged();
     }
+
+    connect(screen(), &QScreen::virtualGeometryChanged, this, &Launcher::onGeometryChanged);
+    connect(screen(), &QScreen::geometryChanged, this, &Launcher::onGeometryChanged);
 }
 
 void Launcher::showEvent(QShowEvent *e)
