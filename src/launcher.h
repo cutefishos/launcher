@@ -62,6 +62,7 @@ signals:
 
 private slots:
     void updateMargins();
+    void updateSize();
     void onGeometryChanged();
 
 protected:

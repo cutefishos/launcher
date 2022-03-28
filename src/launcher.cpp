@@ -170,20 +170,24 @@ void Launcher::updateMargins()
     emit marginsChanged();
 }
 
-void Launcher::onGeometryChanged()
+void Launcher::updateSize()
 {
-    disconnect(screen());
-
-    setScreen(qApp->primaryScreen());
-
     if (m_screenRect != qApp->primaryScreen()->geometry()) {
         m_screenRect = qApp->primaryScreen()->geometry();
         setGeometry(m_screenRect);
         emit screenRectChanged();
     }
+}
 
-    connect(screen(), &QScreen::virtualGeometryChanged, this, &Launcher::onGeometryChanged);
-    connect(screen(), &QScreen::geometryChanged, this, &Launcher::onGeometryChanged);
+void Launcher::onGeometryChanged()
+{
+    disconnect(screen());
+
+    setScreen(qApp->primaryScreen());
+    updateSize();
+
+    connect(screen(), &QScreen::virtualGeometryChanged, this, &Launcher::updateSize);
+    connect(screen(), &QScreen::geometryChanged, this, &Launcher::updateSize);
 }
 
 void Launcher::showEvent(QShowEvent *e)
