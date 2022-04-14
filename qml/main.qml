@@ -30,8 +30,8 @@ import FishUI 1.0 as FishUI
 Item {
     id: root
 
-    width: launcher.screenRect.width
-    height: launcher.screenRect.height
+    // width: launcher.screenRect.width
+    // height: launcher.screenRect.height
 
     property real horizontalSpacing: launcher.screenRect.width * 0.01
     property real verticalSpacing: launcher.screenRect.height * 0.01
