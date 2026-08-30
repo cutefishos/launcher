@@ -54,7 +54,9 @@ ListView {
     highlightRangeMode: ListView.StrictlyEnforceRange
     highlightFollowsCurrentItem: true
 
-    cacheBuffer: control.width * control.count
+    // Keep one extra page ready without tying the cache size to the model
+    // count, which can trigger a binding loop while the view is resizing.
+    cacheBuffer: control.width
     boundsBehavior: Flickable.DragOverBounds
     currentIndex: -1
     clip: true
