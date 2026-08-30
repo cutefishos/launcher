@@ -36,13 +36,15 @@ ListView {
     property int cellWidth: iconSize + calcExtraSpacing(iconSize, control.width)
     property int cellHeight: iconSize + calcExtraSpacing(iconSize, control.height)
 
-    property int rows: control.width / control.cellWidth
-    property int columns: control.height / control.cellHeight
-    property int pageCount: control.rows * control.columns
+    // The view can be laid out once with a zero size while the window is
+    // being created. Keep the page model valid during that first pass.
+    property int rows: Math.max(1, Math.floor(control.width / control.cellWidth))
+    property int columns: Math.max(1, Math.floor(control.height / control.cellHeight))
+    property int pageCount: Math.max(1, control.rows * control.columns)
 
     orientation: ListView.Horizontal
     snapMode: ListView.SnapOneItem
-    model: Math.ceil(control.modelCount / control.pageCount)
+    model: control.modelCount > 0 ? Math.ceil(control.modelCount / control.pageCount) : 0
 
     maximumFlickVelocity: 10000
     highlightMoveDuration: 300

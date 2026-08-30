@@ -107,7 +107,6 @@ void IconItem::loadPixmap()
 
     if (size <= 0) {
         // Clear pixmap
-        delete &m_iconPixmap;
         m_iconPixmap = QPixmap();
         update();
         return;
