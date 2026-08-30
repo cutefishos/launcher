@@ -18,6 +18,7 @@
  */
 
 #include <QApplication>
+#include <QFile>
 #include <QDBusConnection>
 #include <QDBusInterface>
 #include <QPixmapCache>

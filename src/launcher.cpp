@@ -29,7 +29,7 @@
 #include <QScreen>
 #include <QTimer>
 
-#include <KWindowSystem>
+#include <KX11Extras>
 
 Launcher::Launcher(bool firstShow, QQuickView *w)
     : QQuickView(w)
@@ -49,7 +49,6 @@ Launcher::Launcher(bool firstShow, QQuickView *w)
     setColor(Qt::transparent);
     setFlags(Qt::FramelessWindowHint);
     setResizeMode(QQuickView::SizeRootObjectToView);
-    setClearBeforeRendering(true);
     onGeometryChanged();
 
     setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
@@ -192,7 +191,7 @@ void Launcher::onGeometryChanged()
 
 void Launcher::showEvent(QShowEvent *e)
 {
-    KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
+    KX11Extras::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
 
     QQuickView::showEvent(e);
 }
@@ -208,4 +207,3 @@ void Launcher::onActiveChanged()
     if (!isActive())
         Launcher::hide();
 }
-
